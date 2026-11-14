@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roland Huang · Automation &amp; Workflow Engineer</title>
+<meta name="description" content="Roland Huang, automation and workflow engineer. I build the tools and automations that let a small support team stop copying data between systems.">
+<meta name="author" content="Roland Huang">
+<meta name="theme-color" content="#F1F2EE">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Roland Huang · Automation &amp; Workflow Engineer">
+<meta property="og:description" content="If someone does it by hand every day, I try to make it just run. Projects, write-ups and resume.">
+<meta property="og:site_name" content="Roland Huang">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&amp;family=Spline+Sans+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="index.html">Roland Huang<span>Automation &amp; Workflow Engineer</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="resume.html">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <section class="intro grid">
+      <h1>If someone does it by hand every day, I&nbsp;try to make it <i>just&nbsp;run.</i></h1>
+    </section>
+
+    <!-- THE BOARD -->
+    <section class="switch grid" aria-labelledby="board-title">
+      <h2 id="board-title">Projects, by the tools they connect</h2>
+      <div class="board-wrap">
+        <svg id="board" role="group" aria-labelledby="board-title" aria-describedby="board-hint"></svg>
+        <p class="board-hint no-print" id="board-hint">Each cord is a project. Hover or tab to one, then use the arrow keys.</p>
+      </div>
+      <div class="aside">
+        <div class="readout" id="readout">
+          <p class="r-meta"><span class="n" id="r-n"></span><span id="r-kind"></span></p>
+          <h3 id="r-title"></h3>
+          <p class="r-route" id="r-route"></p>
+          <p class="r-text" id="r-text"></p>
+          <ul class="r-facts" id="r-facts"></ul>
+          <a class="r-more" id="r-more" href="#work"></a>
+        </div>
+        <ol class="index" id="index" aria-label="Projects">
+          <li><a href="work/escalation-detector.html"><span class="n">01</span><span>AI escalation detector</span></a></li>
+          <li><a href="work/chrome-side-panel.html"><span class="n">02</span><span>Staff Chrome side panel</span></a></li>
+          <li><a href="work/intercom-integrations.html"><span class="n">03</span><span>Intercom integration suite</span></a></li>
+          <li><a href="work/email-routing.html"><span class="n">04</span><span>Email routing cleanup</span></a></li>
+          <li><a href="work/automating-my-job.html"><span class="n">05</span><span>Automating my own job</span></a></li>
+          <li><a href="work/claude-sync.html"><span class="n">06</span><span>claude-sync</span></a></li>
+          <li><a href="work/video-downloader.html"><span class="n">07</span><span>Video Downloader v2</span></a></li>
+          <li><a href="#p-08"><span class="n">08</span><span>AI document filing pipeline</span></a></li>
+          <li><a href="#p-09"><span class="n">09</span><span>Intercom + Calendly booking app</span></a></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- WRITE-UPS -->
+    <section class="block" id="work">
+      <div class="sec-head"><h2>Selected work</h2></div>
+
+      <article class="work grid" id="w-01">
+        <figure class="pic">
+          <div class="mat"><div class="crop"><img src="assets/img/escalation-system.png" alt="The first four steps of version 1: new Intercom conversation, format the body, AI analysis, filter" width="855" height="954" loading="lazy"></div></div>
+          <figcaption class="cap">Version 1. The first 4 of its 12 steps.</figcaption>
+        </figure>
+        <div class="txt">
+          <p class="meta"><span class="n">01</span>IT services · Intercom → Asana, Google Chat</p>
+          <h3><a href="work/escalation-detector.html">AI escalation detector</a></h3>
+          <p class="dek">It reads every support conversation and flags complaints, cancellations and refunds to Asana and Google Chat.</p>
+          <p>It started as two Zaps. I rebuilt it as a Python service on Google Cloud Run. It ran in shadow mode before it went live, and an eval harness and a prompt playground mean a prompt change gets tested before it ships. Prompt v19 dropped 10 of 10 false positives in eval.</p>
+          <div class="figs">
+            <div class="fig"><b>25 Jun 2026</b><span>live since</span></div>
+            <div class="fig"><b>~62</b><span>AI verdicts a week</span></div>
+            <div class="fig"><b>988</b><span>automated tests</span></div>
+            <div class="fig"><b>A few dollars</b><span>a month in model costs</span></div>
+          </div>
+          <p class="go"><a href="work/escalation-detector.html">Read the write-up →</a></p>
+        </div>
+      </article>
+
+      <article class="work grid" id="w-02">
+        <figure class="sketch">
+          <div class="panel" aria-hidden="true">
+            <div>Calendar</div>
+            <div>Customer lookup</div>
+            <div>Asana card<span class="timer"><svg width="44" height="20" viewBox="0 0 44 20"><rect x=".5" y=".5" width="19" height="19" fill="none" stroke="#15181A"/><path d="M7 5.5v9l7-4.5z" fill="#15181A"/><rect x="24.5" y=".5" width="19" height="19" fill="none" stroke="#15181A"/><rect x="30" y="6" width="8" height="8" fill="#15181A"/></svg></span></div>
+            <div>Intercom tickets</div>
+          </div>
+          <figcaption class="cap">The four parts of the panel, sketched.</figcaption>
+        </figure>
+        <div class="txt">
+          <p class="meta"><span class="n">02</span>IT services · Chrome → Intercom, Asana, Claude Code</p>
+          <h3><a href="work/chrome-side-panel.html">Staff Chrome side panel</a></h3>
+          <p class="dek">Calendar, customer lookup, an Asana card with a play/stop timer, and Intercom tickets, in one panel.</p>
+          <p>Then I added a Claude Code auto-timer. Hooks track which Asana task you are on and drive the real Asana timer.</p>
+          <p>It was rolled out to all staff.</p>
+          <p class="go"><a href="work/chrome-side-panel.html">Read the write-up →</a></p>
+        </div>
+        <div class="side">
+          <div class="ruler" role="img" aria-label="Releases from v0.3.1 to v0.3.56 in one month">
+            <svg viewBox="0 0 300 70" id="ruler" aria-hidden="true"></svg>
+          </div>
+          <div class="big">218/218</div>
+          <span>end-to-end tests passing</span>
+        </div>
+      </article>
+
+      <article class="work grid" id="w-03">
+        <div class="txt">
+          <p class="meta"><span class="n">03</span>IT services · Intercom → WHMCS, Asana</p>
+          <h3><a href="work/intercom-integrations.html">Intercom integration suite</a></h3>
+          <p class="dek">A billing sidebar (WHMCS) and an Asana sidebar inside Intercom, plus a service that adds each contact's email domain.</p>
+          <p>The support team used to switch tabs to check billing or find the right task. With the sidebars, it sits next to the conversation.</p>
+          <div class="figs">
+            <div class="fig"><b>10</b><span>people on the support team, no tab-switching</span></div>
+            <div class="fig"><b>~$0</b><span>a month on Cloud Run</span></div>
+          </div>
+          <p class="go"><a href="work/intercom-integrations.html">Read the write-up →</a></p>
+        </div>
+        <div class="shots">
+          <div class="mat"><img src="assets/img/intercom-sidebar.png" alt="Intercom inbox with the billing sidebar outlined on the right" width="1919" height="950" loading="lazy"></div>
+          <div class="under">
+            <p class="cap" style="margin:0">The billing sidebar, outlined in red, next to a conversation. Customer details blurred.</p>
+            <figure style="margin:0">
+              <div class="dark-crop"><img src="assets/img/domain-attribute.png" alt="Intercom contact panel with the Domain attribute" width="877" height="950" loading="lazy"></div>
+              <figcaption class="cap">The Domain attribute on a contact.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </article>
+
+      <article class="work grid" id="w-04">
+        <div class="chart">
+          <div class="ratio"><b>591 / 634</b><span>alerts had been cleared by hand</span></div>
+          <div class="bars" role="img" aria-label="Emails reaching people in the same sample: 99 before, 37 after">
+            <h4 aria-hidden="true">Emails reaching people, same sample</h4>
+            <div class="bar-row" aria-hidden="true"><span>Before</span><div class="bar"><i style="width:100%"></i></div><span class="v">99</span></div>
+            <div class="bar-row" aria-hidden="true"><span>After</span><div class="bar"><i style="width:37.4%"></i></div><span class="v">37</span></div>
+          </div>
+        </div>
+        <div class="txt">
+          <p class="meta"><span class="n">04</span>IT services · Email → Intercom</p>
+          <h3><a href="work/email-routing.html">Email routing cleanup</a></h3>
+          <p class="dek">Automated alerts were landing on people, and almost all of them were being cleared by hand.</p>
+          <p>I simulated the rules against real traffic first. One rule would have spam-tagged 51 real emails, so I rejected it and shipped narrow ones instead.</p>
+          <p class="figline"><b>14/14</b> alerts routed right after go-live.</p>
+          <p class="go"><a href="work/email-routing.html">Read the write-up →</a></p>
+        </div>
+      </article>
+
+      <article class="work grid" id="w-05">
+        <div class="txt">
+          <p class="meta"><span class="n">05</span>IT services · Claude Code → Asana</p>
+          <h3><a href="work/automating-my-job.html">Automating my own job</a></h3>
+          <p class="dek">Claude Code skills that did the routine parts of my week.</p>
+          <ol class="steps">
+            <li>Morning sprint check</li>
+            <li>Session wrap-up</li>
+            <li>Daily time log, built from session transcripts</li>
+            <li>Friday status post</li>
+            <li>Quarterly goal update</li>
+          </ol>
+          <p class="go"><a href="work/automating-my-job.html">Read the write-up →</a></p>
+        </div>
+        <div class="side">
+          <p class="rules"><span>Read-only by default.</span><span>Drafts only.</span><span>Read back every write.</span></p>
+          <div class="fig"><b>6,133 minutes</b><span>logged to Asana automatically, in 77 entries, Oct to Nov 2026</span></div>
+        </div>
+      </article>
+
+      <h3 class="more-head" id="more">More projects</h3>
+      <table class="tbl">
+        <thead><tr><th scope="col">No.</th><th scope="col">Project</th><th scope="col">For</th><th scope="col">What it does</th><th scope="col" style="text-align:right">Figure</th></tr></thead>
+        <tbody>
+          <tr id="p-06"><td class="n">06</td><td class="name"><a href="work/claude-sync.html">claude-sync</a></td><td class="kind">Personal</td><td>VS Code extension. Syncs Claude Code sessions, skills and settings across devices through each user's own Google Drive. TypeScript.</td><td class="f">v2.5.4 · 47 tests</td></tr>
+          <tr id="p-07"><td class="n">07</td><td class="name"><a href="work/video-downloader.html">Video Downloader v2</a></td><td class="kind">Personal</td><td>Chrome extension. Saves HLS/DASH streams as real MP4s with its own demuxer and muxer.</td><td class="f">~5.6k lines of JS</td></tr>
+          <tr id="p-08"><td class="n">08</td><td class="name">AI document filing pipeline</td><td class="kind">Client</td><td>Gemini reads invoices and bank statements, picks the folder, renames and logs.</td><td class="f">20–30 docs a week</td></tr>
+          <tr id="p-09"><td class="n">09</td><td class="name">Intercom + Calendly booking app</td><td class="kind">IT services</td><td>Booking that connects Intercom and Calendly.</td><td class="f">Live Jul 2026</td></tr>
+        </tbody>
+      </table>
+
+      <div class="smalls-wrap">
+        <h3 class="more-head">Smaller projects</h3>
+        <ul class="smalls">
+          <li>Team active-time report from Intercom events<span class="n">82/82 tests</span></li>
+          <li>Fin AI training sync<span class="n">515 articles</span></li>
+          <li>Google Workspace audit report generator</li>
+          <li>Loom archive<span class="n">166 videos, 8.49 hours</span></li>
+          <li>AI meeting notes pipeline</li>
+          <li>Risk alert system<span class="n">22 steps, 5 branches</span></li>
+          <li>Asset expiry reminders</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="block about" id="about">
+      <div class="sec-head"><h2>About</h2></div>
+      <div class="grid">
+        <figure class="pic">
+          <img src="assets/img/roland_portrait.png" alt="Portrait of Roland Huang" width="570" height="570" loading="lazy">
+        </figure>
+        <div class="bio">
+          <p>I live in General Santos City in the Philippines. I spent 2 years and 4 months working remotely for an IT services company.</p>
+          <p>I started there with no-code automations. By the end I was building production cloud services, AI classifiers with eval harnesses, browser extensions and AI-agent tooling.</p>
+        </div>
+        <div class="how">
+          <h3>How I work</h3>
+          <ol>
+            <li>Read-only until someone says go.</li>
+            <li>Shadow mode before live.</li>
+            <li>Check facts against the real system before I claim them.</li>
+            <li>Write a spec first. Document everything.</li>
+          </ol>
+        </div>
+        <ol class="arc" aria-label="Timeline">
+          <li><span class="n">2023</span>freeCodeCamp Responsive Web Design certificate</li>
+          <li><span class="n">2024</span>BSc Computer Science, Notre Dame University. First React apps.</li>
+          <li><span class="n">2024</span>Joined an IT services company. Zapier and Apps Script automations.</li>
+          <li><span class="n">2025</span>Freelance, Oct to Dec: automations for a Hawaii wellness startup.</li>
+          <li><span class="n">2026</span>Cloud Run services, AI classifiers with evals, extensions, agent tooling.</li>
+        </ol>
+        <div class="stack">
+          <p><b>Languages.</b> Python, JavaScript/Node, TypeScript, PHP, Apps Script.</p>
+          <p><b>Google Cloud.</b> Cloud Run, Firestore, Vertex AI, Pub/Sub.</p>
+          <p><b>Automation.</b> Zapier, Make, n8n.</p>
+          <p><b>Systems.</b> Intercom, Asana, WHMCS, Stripe, Google Workspace.</p>
+          <p><b>Extensions.</b> Chrome MV3 and VS Code.</p>
+          <p><b>AI.</b> LLM evals and prompt design. Claude Code skills, hooks, MCP.</p>
+          <p><b>Testing.</b> Playwright, pytest, Jest.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="inner grid">
+        <h2>Is there something your team does by hand every day? Tell me what it is.</h2>
+        <div class="links">
+          <a href="mailto:rolandbonhuang@gmail.com">Email<span class="n">rolandbonhuang@gmail.com</span></a>
+          <a href="https://github.com/Shimotakatote" rel="me">GitHub<span class="n">Shimotakatote</span></a>
+          <a href="https://www.linkedin.com/in/roland-huang-1541533a4/" rel="me">LinkedIn<span class="n">Roland Huang</span></a>
+          <a href="resume.html">Resume<span class="n">one page, printable</span></a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Roland Huang, 2026</span>
+    <a class="no-print" href="#main">Back to top</a>
+  </div>
+</footer>
+
+<script src="assets/js/board.js"></script>
+</body>
+</html>

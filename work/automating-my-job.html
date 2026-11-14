@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Automating my own job · Roland Huang</title>
+<meta name="description" content="Claude Code skills that did the routine parts of my week: a morning sprint check, a session wrap-up, a daily time log, a Friday status post and a quarterly goal update.">
+<meta name="author" content="Roland Huang">
+<meta name="theme-color" content="#F1F2EE">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Automating my own job · Roland Huang">
+<meta property="og:description" content="Five Claude Code skills, three safety rules, and 6,133 minutes logged to Asana without typing them in.">
+<meta property="og:site_name" content="Roland Huang">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&amp;family=Spline+Sans+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../index.html">Roland Huang<span>Automation &amp; Workflow Engineer</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <a href="../resume.html">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <header class="wu-head grid">
+      <p class="wu-back"><a href="../index.html#work">All work</a></p>
+      <p class="wu-meta"><span class="n">05</span><span class="wu-label">IT services</span> · Claude Code → Asana</p>
+      <h1 class="wu-title">Automating my own job</h1>
+      <p class="wu-dek">Claude Code skills that did the routine parts of my week, so I could spend the time on the actual work.</p>
+    </header>
+
+    <div class="wu-body grid">
+      <aside class="wu-side" aria-label="Project facts">
+        <dl class="wu-facts">
+          <div><dt>Stack</dt><dd>Claude Code skills, hooks and scheduled tasks. Python (standard library only). Asana REST API. Gmail and Intercom through MCP.</dd></div>
+          <div><dt>Role</dt><dd>I designed and wrote them for my own work.</dd></div>
+          <div><dt>Status</dt><dd>In daily use from October to November 2026.</dd></div>
+          <div><dt>Numbers</dt><dd>
+            <ul class="wu-nums">
+              <li><b>6,133</b> minutes logged to Asana automatically</li>
+              <li><b>77</b> time entries, 2 Oct to 13 Nov 2026</li>
+              <li><b>5</b> skills</li>
+              <li><b>~838</b> lines of skill scripts</li>
+              <li><b>6</b> scheduled tasks</li>
+            </ul>
+          </dd></div>
+        </dl>
+      </aside>
+
+      <div class="wu-main">
+        <section class="wu-sec">
+          <h2>The problem</h2>
+          <p>A lot of my week was admin. Every morning I checked my sprint board, my email and the support inbox to work out what needed me. At the end of a task I wrote a handoff and moved the card. At the end of the day I logged my time by hand. On Fridays I wrote a status update. Every so often I counted my finished tasks for a quarterly goal.</p>
+          <p>None of it was hard. All of it was repeated, and all of it pulled from systems I already had access to. Most of these skills started the same way: I did the task by hand once, then wrote it down so Claude Code could do it next time.</p>
+        </section>
+
+        <section class="wu-sec">
+          <h2>What I built</h2>
+          <p>Five skills. Each one is a written procedure plus small Python scripts that Claude Code follows.</p>
+          <table class="tbl">
+            <caption class="visually-hidden">The five skills, when each one ran and what it was allowed to write</caption>
+            <thead><tr><th scope="col">No.</th><th scope="col">Skill</th><th scope="col">When</th><th scope="col">What it may write</th></tr></thead>
+            <tbody>
+              <tr><td class="n">01</td><td class="name">Morning sprint check</td><td data-k="When">Each morning, when I ask</td><td data-k="May write">Nothing. Drafts only.</td></tr>
+              <tr><td class="n">02</td><td class="name">Session wrap-up</td><td data-k="When">When I park a task</td><td data-k="May write">Each write, after I confirm it</td></tr>
+              <tr><td class="n">03</td><td class="name">Daily time log</td><td data-k="When">Weekdays, about 6:30pm</td><td data-k="May write">Asana time entries, clear matches only</td></tr>
+              <tr><td class="n">04</td><td class="name">Friday status</td><td data-k="When">Fridays</td><td data-k="May write">One status update</td></tr>
+              <tr><td class="n">05</td><td class="name">Quarterly goal update</td><td data-k="When">On a schedule</td><td data-k="May write">One goal value</td></tr>
+            </tbody>
+          </table>
+          <p><strong>Morning sprint check.</strong> It pulls my open sprint tasks from Asana, with every comment posted since the last workday. Then it checks Gmail and Intercom for anything tied to those tasks. I get one short report, sorted into: do now, nudge someone, ready to close, in the wrong stage, waiting, and anything new outside the sprint.</p>
+          <p><strong>Session wrap-up.</strong> A checkpoint for work that continues later. It checks the live facts, logs my time, moves the task to the right stage (Waiting, Validating, Review or Building), drafts a handoff comment, lists open loops with an owner for each, sets the next check-in, cleans up local leftovers and updates its notes.</p>
+          <p><strong>Daily time log.</strong> It measures how long I actually worked on each task from my Claude Code session transcripts, then posts the time to Asana. The steps are below.</p>
+          <p><strong>Friday status.</strong> It pulls what shipped, closed and moved since the last update, checks each claim against Asana, picks On track, At risk or Off track, and posts the weekly status for my project.</p>
+          <p><strong>Quarterly goal update.</strong> It counts the sprint tasks I completed this quarter and last quarter, sets the goal's current value and reads it back. It sets the value only. It never posts a status on the goal.</p>
+        </section>
+
+        <section class="wu-sec">
+          <h2>How the time log works</h2>
+          <ol class="wu-steps">
+            <li><h3>Read the transcripts</h3><p>Every Claude Code session leaves a transcript with timestamps. The script reads the day's sessions.</p></li>
+            <li><h3>Measure active time</h3><p>Any gap longer than 15 minutes is capped, so lunch or a break is not billed.</p></li>
+            <li><h3>Split parallel sessions</h3><p>I often ran parallel sessions, one per task. When they overlap, the minutes are split between them, so a day never adds up to more than the clock.</p></li>
+            <li><h3>Match each session to a task</h3><p>Each session is matched to the Asana task it worked on. Only clear matches get posted.</p></li>
+            <li><h3>Check the ledger, post, read back</h3><p>The time log and the session wrap-up share one ledger. A session that is already in it is skipped, so nothing is logged twice. After posting, the script reads the entry back from Asana.</p></li>
+          </ol>
+        </section>
+
+        <section class="wu-sec">
+          <h2>The safety rules</h2>
+          <p>These skills touched shared systems, so they followed three rules.</p>
+          <ol>
+            <li><strong>Read-only by default.</strong> The morning check only reads and drafts. The session wrap-up asks before each write. The scheduled skills each have one narrow write and nothing else.</li>
+            <li><strong>Drafts only.</strong> Messages to people are drafted, not sent. The Friday status post is the one message that goes out on its own. The time log and the goal update write only time entries and one number.</li>
+            <li><strong>Read back every write.</strong> After a skill writes something, it reads it back from the system to prove it landed.</li>
+          </ol>
+          <p>The scripts use the Python standard library only, so there is nothing to install. Some Asana calls run as in-page requests through Claude in Chrome.</p>
+        </section>
+
+        <div class="wu-ba">
+          <div class="wu-ba-col">
+            <h3 class="wu-ba-k">Before</h3>
+            <p>Timesheets, morning triage, card moves, status reports and goal counts, all by hand.</p>
+          </div>
+          <div class="wu-ba-col">
+            <h3 class="wu-ba-k">After</h3>
+            <b class="wu-ba-big">6,133 min</b>
+            <p>logged to Asana automatically, in 77 entries.</p>
+          </div>
+        </div>
+
+        <section class="wu-sec">
+          <h2>What changed</h2>
+          <p>Between 2 October and 13 November 2026, the time log and the wrap-up posted 6,133 minutes to Asana in 77 entries. That is about 102 hours I did not have to type in or remember.</p>
+          <p>The bigger change was the morning. Instead of checking Asana, Gmail and Intercom one by one, I read one report and started on the first item.</p>
+          <p class="wu-note">5 skills, about 838 lines of scripts, 6 scheduled tasks.</p>
+        </section>
+      </div>
+    </div>
+
+    <nav class="wu-pn" aria-label="More projects">
+      <a class="wu-prev" href="email-routing.html"><span class="n">Previous · 04</span><span class="wu-pn-t">Email routing cleanup</span></a>
+      <a class="wu-next" href="claude-sync.html"><span class="n">Next · 06</span><span class="wu-pn-t">claude-sync</span></a>
+    </nav>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Roland Huang, 2026</span>
+    <a class="no-print" href="#main">Back to top</a>
+  </div>
+</footer>
+</body>
+</html>

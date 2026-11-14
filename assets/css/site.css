@@ -1,0 +1,586 @@
+/* ==========================================================================
+   Roland Huang, portfolio. Shared styles ("Switchboard" design).
+
+   Fonts: Schibsted Grotesk (text) + Spline Sans Mono (numbers).
+   Colours: paper #F1F2EE, ink #15181A, one signal green #087A50.
+   The green is only for active or selected states. Do not use it for
+   decoration, borders or headings.
+
+   PAGE SHELL (every page)
+     <a class="skip" href="#main">Skip to content</a>
+     <header class="top"> <div class="wrap"> .mark + nav.nav </div> </header>
+     <main id="main"> <div class="wrap"> ... </div> </main>
+     <footer> <div class="wrap"> ... </div> </footer>
+   Pages inside /work/ must prefix every link with ../ (../index.html,
+   ../assets/css/site.css, ../resume.html). Keep all links relative.
+
+   WRITE-UP PAGE COMPONENTS (work/<slug>.html)
+     .wu-head           page header (a .grid)
+       .wu-back         back link, points to ../index.html#work
+       .wu-meta         number + label + route line
+         .n             project number, mono ("01")
+         .wu-label      "IT services" | "Client" | "Personal" | "Freelance"
+       .wu-title        the h1
+       .wu-dek          one-sentence lead under the title
+     .wu-body           two-column body (a .grid). Put the aside FIRST in
+                        the markup: it sits on the right on wide screens
+                        and moves below the prose at 980px and under.
+       .wu-side         narrow facts column (aside)
+         .wu-facts      a <dl>; each fact is <div><dt>..</dt><dd>..</dd></div>
+                        Use dt names: Stack, Role, Status, Numbers.
+         .wu-nums       a <ul> inside a dd for figures: <li><b>988</b> tests</li>
+       .wu-main         prose column, about 64ch
+         .wu-sec        a section with an <h2>
+         .wu-fig        figure; put the image in .mat (grey mount) and
+                        the caption in figcaption.cap
+         .wu-ba         Before / After pair
+           .wu-ba-col   one side; first child h3.wu-ba-k ("Before"/"After")
+           .wu-ba-big   optional big figure inside a side
+         .wu-steps      numbered "How it works" list (<ol>); each <li> holds
+                        an <h3> and a <p>. Numbers come from CSS.
+         .wu-note       small aside line in the prose (mono caption style)
+     .wu-pn             prev / next project nav (a <nav>)
+       .wu-prev, .wu-next   the two links; inside each:
+         .n             "Previous" / "Next" + number
+         .wu-pn-t       project title
+       Use <span class="wu-pn-empty"></span> in place of a missing side.
+
+   Example:
+     <main id="main"><div class="wrap">
+       <header class="wu-head grid">
+         <p class="wu-back"><a href="../index.html#work">All work</a></p>
+         <p class="wu-meta"><span class="n">01</span><span class="wu-label">IT services</span> · Intercom → Asana, Google Chat</p>
+         <h1 class="wu-title">AI escalation detector</h1>
+         <p class="wu-dek">It reads every support conversation and flags ...</p>
+       </header>
+       <div class="wu-body grid">
+         <aside class="wu-side" aria-label="Project facts">
+           <dl class="wu-facts">
+             <div><dt>Stack</dt><dd>Python, Cloud Run</dd></div>
+             <div><dt>Role</dt><dd>Sole builder</dd></div>
+             <div><dt>Status</dt><dd>Live since 25 Jun 2026</dd></div>
+             <div><dt>Numbers</dt><dd><ul class="wu-nums"><li><b>988</b> automated tests</li></ul></dd></div>
+           </dl>
+         </aside>
+         <div class="wu-main">
+           <section class="wu-sec"><h2>The problem</h2><p>...</p></section>
+           <figure class="wu-fig"><div class="mat"><img src="../assets/img/x.png" alt="..."></div>
+             <figcaption class="cap">...</figcaption></figure>
+           <div class="wu-ba">
+             <div class="wu-ba-col"><h3 class="wu-ba-k">Before</h3><p>...</p></div>
+             <div class="wu-ba-col"><h3 class="wu-ba-k">After</h3><p>...</p></div>
+           </div>
+           <ol class="wu-steps"><li><h3>Read</h3><p>...</p></li></ol>
+         </div>
+       </div>
+       <nav class="wu-pn" aria-label="More projects">
+         <span class="wu-pn-empty"></span>
+         <a class="wu-next" href="chrome-side-panel.html"><span class="n">Next · 02</span><span class="wu-pn-t">Staff Chrome side panel</span></a>
+       </nav>
+     </div></main>
+
+   PRINT: the @media print block at the end is the base. The resume adds
+   its own print rules on top. Helpers: .no-print, .print-only.
+   ========================================================================== */
+
+:root{
+  --paper:#F1F2EE;
+  --paper-2:#E3E6E1;
+  --ink:#15181A;
+  --ink-2:#464B4E;
+  --ink-3:#5F6467;
+  --rule:#C8CCC7;
+  --signal:#087A50;
+
+  --sans:"Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --mono:"Spline Sans Mono", ui-monospace, Menlo, monospace;
+
+  /* type scale: six steps plus the headline */
+  --fs-xs:13px;   /* mono: numbers, captions */
+  --fs-s:15px;    /* meta, small print */
+  --fs-m:18px;    /* body */
+  --fs-l:23px;    /* lead, readout title */
+  --fs-xl:32px;   /* h3, figures */
+  --fs-xxl:46px;  /* h2, contact */
+  --fs-h1:60px;
+
+  --gap:88px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:var(--fs-m);line-height:1.5;font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--signal)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+img{display:block;max-width:100%;height:auto}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+.wrap{max-width:1328px;margin:0 auto;padding:0 56px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.n{font-family:var(--mono);font-size:var(--fs-xs);font-weight:400;font-variant-numeric:tabular-nums}
+.cap{font-family:var(--mono);font-size:var(--fs-xs);color:var(--ink-3);margin:10px 0 0;line-height:1.45}
+.tab{font-variant-numeric:tabular-nums lining-nums}
+.visually-hidden{position:absolute !important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.print-only{display:none}
+
+/* skip link */
+.skip{position:absolute;left:12px;top:-60px;z-index:10;background:var(--ink);color:var(--paper);padding:8px 12px;font-size:var(--fs-s);text-decoration:none}
+.skip:focus{top:12px;color:var(--paper)}
+
+/* header */
+.top{border-bottom:1px solid var(--ink)}
+.top .wrap{display:flex;align-items:baseline;justify-content:space-between;gap:24px;padding-top:20px;padding-bottom:16px}
+.mark{text-decoration:none;font-size:var(--fs-m);font-weight:700;letter-spacing:-.005em}
+.mark span{font-weight:400;color:var(--ink-2);margin-left:12px;font-size:var(--fs-s)}
+.nav{display:flex;gap:28px;font-size:var(--fs-s)}
+.nav a{text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav a[aria-current="page"]{text-decoration:underline}
+
+/* intro */
+.intro{padding:40px 0 30px}
+.intro h1{
+  grid-column:1 / span 10;margin:0;
+  font-size:var(--fs-h1);line-height:1.02;font-weight:560;letter-spacing:-.022em;
+}
+.intro h1 i{font-weight:520}
+
+/* switchboard */
+.switch{border-top:1px solid var(--ink);padding-top:12px;align-items:start}
+.switch h2{grid-column:1 / -1;margin:0 0 4px;font-size:var(--fs-s);font-weight:600}
+.board-wrap{grid-column:1 / span 8}
+.board-hint{margin:2px 0 0;font-size:var(--fs-xs);font-family:var(--mono);color:var(--ink-3)}
+#board{display:block;width:100%;height:auto;overflow:visible;margin-top:-4px}
+#board .rail{stroke:var(--ink);stroke-width:1}
+#board .rail-2{stroke:var(--rule);stroke-width:1}
+#board .lbl{font-family:var(--sans);font-size:19px;font-weight:560;fill:var(--ink);transition:opacity .15s}
+#board.hovering .node .lbl{opacity:.42}
+#board.hovering .node.on .lbl{opacity:1}
+#board .cord{fill:none;stroke:var(--ink);stroke-width:1.2;stroke-linecap:round;transition:opacity .15s}
+#board .knot{fill:var(--ink)}
+#board.hovering .wire .cord,#board.hovering .wire .knot{opacity:.2}
+#board.hovering .wire.hot .cord,#board.hovering .wire.hot .knot{opacity:1}
+#board .hit{fill:none;stroke:transparent;stroke-width:16;pointer-events:stroke;cursor:pointer}
+#board .wire{outline:none}
+#board .wire:focus-visible .cord{stroke-dasharray:4 3;opacity:1}
+#board .live .cord{stroke:var(--signal);stroke-width:2.6;opacity:1}
+#board .live .knot{fill:var(--signal)}
+#board.kbd .live .cord{stroke-dasharray:7 4}
+#board .jack{fill:var(--paper);stroke:var(--ink);stroke-width:1.1}
+#board .plug{fill:var(--ink)}
+#board .plug.on{fill:var(--signal)}
+
+.aside{grid-column:9 / span 4;padding-top:26px}
+.readout{min-height:360px}
+.r-meta{margin:0;font-size:var(--fs-s);color:var(--ink-2)}
+.r-meta .n{color:var(--signal);margin-right:10px}
+.readout h3{margin:6px 0 2px;font-size:var(--fs-l);line-height:1.15;font-weight:650;letter-spacing:-.01em}
+.r-route{margin:0 0 14px;font-size:var(--fs-s);color:var(--ink-2)}
+.r-text{margin:0 0 16px}
+.r-facts{list-style:none;margin:0;padding:0}
+.r-facts li{font-size:var(--fs-s);color:var(--ink-2);margin:0 0 3px}
+.r-facts b{color:var(--ink);font-weight:650;margin-right:4px}
+.r-more{display:inline-block;margin-top:14px;font-size:var(--fs-s)}
+
+.index{list-style:none;margin:20px 0 0;padding:16px 0 0;border-top:1px solid var(--rule)}
+.index button{
+  all:unset;box-sizing:border-box;display:grid;grid-template-columns:34px 1fr;width:100%;
+  padding:4px 0;cursor:pointer;font-size:var(--fs-s);line-height:1.35;color:var(--ink-2);
+}
+.index button .n{color:var(--ink-3);padding-top:1px}
+.index button:hover{color:var(--ink)}
+.index button[aria-pressed="true"]{color:var(--ink);font-weight:600}
+.index button[aria-pressed="true"] .n{color:var(--signal)}
+.index button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.index a{display:grid;grid-template-columns:34px 1fr;padding:4px 0;font-size:var(--fs-s);line-height:1.35;text-decoration:none}
+
+/* sections */
+section.block{padding-top:var(--gap)}
+.sec-head{border-top:1px solid var(--ink);padding-top:12px;margin-bottom:40px}
+.sec-head h2{margin:0;font-size:var(--fs-xxl);line-height:1.02;font-weight:600;letter-spacing:-.022em}
+
+.work{margin-bottom:var(--gap)}
+.meta{margin:0 0 8px;font-size:var(--fs-s);color:var(--ink-2)}
+.meta .n{color:var(--ink);margin-right:10px}
+.work h3{margin:0 0 14px;font-size:var(--fs-xl);line-height:1.06;font-weight:640;letter-spacing:-.018em}
+.work h3 a{text-decoration:none}
+.work h3 a:hover{text-decoration:underline;text-decoration-thickness:2px}
+.work .dek{font-size:var(--fs-l);line-height:1.3;margin:0 0 18px;letter-spacing:-.006em}
+.work p{margin:0 0 14px;max-width:34em}
+.work .go{margin:22px 0 0;font-size:var(--fs-s)}
+.mat{background:var(--paper-2);padding:24px}
+.mat img,.crop{border:1px solid var(--ink)}
+
+/* big figures, used sparingly */
+.figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 24px;margin:26px 0 0}
+.fig b{display:block;font-size:var(--fs-xl);line-height:1;font-weight:600;letter-spacing:-.02em}
+.fig span{display:block;font-size:var(--fs-s);color:var(--ink-2);margin-top:6px;line-height:1.35}
+
+/* 01 */
+#w-01 .pic{grid-column:1 / span 6;margin:0}
+#w-01 .txt{grid-column:8 / span 5;padding-top:6px}
+.crop{position:relative;overflow:hidden;aspect-ratio:400 / 296;background:#fff}
+.crop img{position:absolute;max-width:none;width:213.75%;left:-57.5%;top:-30.4%}
+
+/* 02 */
+#w-02 .sketch{grid-column:1 / span 3;margin:0}
+#w-02 .txt{grid-column:4 / span 5;padding-left:12px}
+#w-02 .side{grid-column:10 / span 3;padding-top:6px}
+.panel{border:1px solid var(--ink);background:var(--paper);font-size:var(--fs-s);max-width:250px}
+.panel div{padding:12px 14px;border-top:1px solid var(--rule);min-height:64px;position:relative}
+.panel div:first-child{border-top:0}
+.panel .timer{position:absolute;right:12px;top:12px;display:flex;gap:6px}
+.panel .timer svg{display:block}
+.ruler svg{width:100%;height:auto;display:block}
+.ruler text{font-family:var(--mono);font-size:13px;fill:var(--ink-2)}
+.big{font-size:var(--fs-xxl);line-height:1;font-weight:600;letter-spacing:-.025em;margin:40px 0 6px}
+.big + span{display:block;font-size:var(--fs-s);color:var(--ink-2)}
+
+/* 03 */
+#w-03 .txt{grid-column:1 / span 4}
+#w-03 .shots{grid-column:6 / span 7}
+#w-03 .under{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;margin-top:18px;align-items:start}
+.dark-crop{position:relative;overflow:hidden;aspect-ratio:660 / 190;border:1px solid var(--ink);background:#1e2026}
+.dark-crop img{position:absolute;max-width:none;width:132.9%;left:-2.85%;top:-368.4%}
+
+/* 04 */
+#w-04 .chart{grid-column:1 / span 4;padding-top:4px}
+#w-04 .txt{grid-column:6 / span 6}
+.ratio b{display:block;font-size:var(--fs-xxl);line-height:1;font-weight:600;letter-spacing:-.025em}
+.ratio span{display:block;font-size:var(--fs-s);color:var(--ink-2);margin-top:6px}
+.bars{margin-top:44px}
+.bars h4{margin:0 0 14px;font-size:var(--fs-s);font-weight:600}
+.bar-row{display:grid;grid-template-columns:52px minmax(0,1fr) 34px;gap:10px;align-items:center;margin:0 0 10px;font-size:var(--fs-s)}
+.bar-row .v{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.bar{height:16px;border:1px solid var(--ink-3);position:relative}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+.figline{font-size:var(--fs-l);margin:20px 0 0 !important}
+.figline b{font-weight:650}
+
+/* 05 */
+#w-05 .txt{grid-column:1 / span 5}
+#w-05 .side{grid-column:7 / span 6;padding-top:4px}
+.steps{margin:6px 0 0;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;padding:3px 0;display:grid;grid-template-columns:28px 1fr}
+.steps li::before{content:counter(s);font-family:var(--mono);font-size:var(--fs-xs);color:var(--ink-3);padding-top:3px}
+.work .rules{font-size:var(--fs-xxl);line-height:1.04;font-weight:600;letter-spacing:-.025em;margin:0 0 48px}
+.rules span{display:block}
+.rules span + span{border-top:1px solid var(--ink);padding-top:8px;margin-top:8px}
+
+/* more projects */
+.more-head{margin:0 0 12px;font-size:var(--fs-l);font-weight:650;letter-spacing:-.01em}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-size:var(--fs-s);font-weight:400;color:var(--ink-3);text-align:left;padding:0 18px 8px 0;border-bottom:1px solid var(--ink)}
+.tbl td{padding:14px 18px 14px 0;border-bottom:1px solid var(--rule);vertical-align:baseline}
+.tbl td.n{color:var(--ink-3);width:48px}
+.tbl td.name{font-weight:640;width:25%}
+.tbl td.kind{font-size:var(--fs-s);color:var(--ink-2);width:11%}
+.tbl td.f{text-align:right;white-space:nowrap;font-weight:600}
+.tbl tr:target td{background:var(--paper-2)}
+
+.smalls-wrap{margin-top:56px}
+.smalls{columns:2;column-gap:48px;list-style:none;margin:0;padding:0}
+.smalls li{break-inside:avoid;padding:5px 0}
+.smalls li .n{color:var(--ink-2);margin-left:10px;white-space:nowrap}
+
+/* about */
+.about .pic{grid-column:1 / span 3;margin:0}
+.about .pic img{width:100%;filter:grayscale(1) contrast(1.05)}
+.about .bio{grid-column:4 / span 5}
+.about .bio p{font-size:var(--fs-l);line-height:1.4;margin:0 0 18px}
+.about .how{grid-column:10 / span 3}
+.how h3{margin:0 0 12px;font-size:var(--fs-s);font-weight:600}
+.how ol{list-style:none;margin:0;padding:0;counter-reset:h}
+.how li{counter-increment:h;font-size:var(--fs-l);line-height:1.2;font-weight:560;letter-spacing:-.01em;margin:0 0 18px;display:grid;grid-template-columns:26px 1fr}
+.how li::before{content:counter(h);font-family:var(--mono);font-size:var(--fs-xs);font-weight:400;color:var(--ink-3);padding-top:6px}
+
+.arc{grid-column:4 / span 9;list-style:none;margin:56px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0 20px;border-top:1px solid var(--ink)}
+.arc li{position:relative;padding-top:16px;font-size:var(--fs-s);line-height:1.4}
+.arc li::before{content:"";position:absolute;left:0;top:-5px;width:9px;height:9px;border-radius:50%;background:var(--paper);border:1px solid var(--ink)}
+.arc li .n{display:block;color:var(--ink);margin-bottom:4px}
+
+.stack{grid-column:4 / span 9;margin-top:48px;columns:2;column-gap:48px}
+.stack p{margin:0 0 10px;break-inside:avoid;font-size:var(--fs-s);line-height:1.5}
+.stack b{font-weight:650}
+
+/* contact */
+.contact{padding:var(--gap) 0 0}
+.contact .inner{border-top:1px solid var(--ink);padding-top:28px}
+.contact h2{grid-column:1 / span 9;margin:0 0 30px;font-size:var(--fs-xxl);line-height:1.04;font-weight:600;letter-spacing:-.022em}
+.links{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:12px 48px;font-size:var(--fs-l)}
+.links a{text-decoration-thickness:1px}
+.links .n{font-size:var(--fs-xs);color:var(--ink-3);margin-left:8px}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;padding-top:56px;padding-bottom:28px;font-size:var(--fs-s);color:var(--ink-3)}
+footer a{color:var(--ink-3)}
+
+/* ==========================================================================
+   Write-up pages (work/<slug>.html). See the comment block at the top.
+   ========================================================================== */
+.wu-head{padding:28px 0 44px;align-items:end}
+.wu-back{grid-column:1 / -1;margin:0 0 36px;font-size:var(--fs-s)}
+.wu-back a{text-decoration:none}
+.wu-back a::before{content:"←";margin-right:8px}
+.wu-back a:hover{text-decoration:underline}
+.wu-meta{grid-column:1 / span 10;margin:0 0 10px;font-size:var(--fs-s);color:var(--ink-2)}
+.wu-meta .n{color:var(--ink);margin-right:10px}
+.wu-label{color:var(--ink);font-weight:600}
+.wu-title{
+  grid-column:1 / span 10;margin:0;
+  font-size:var(--fs-h1);line-height:1.02;font-weight:560;letter-spacing:-.022em;
+}
+.wu-dek{grid-column:1 / span 7;margin:20px 0 0;font-size:var(--fs-l);line-height:1.3;letter-spacing:-.006em}
+
+.wu-body{border-top:1px solid var(--ink);padding-top:14px;align-items:start}
+.wu-side{grid-column:10 / span 3;grid-row:1;position:sticky;top:24px;padding-top:4px}
+.wu-main{grid-column:1 / span 8;grid-row:1;min-width:0}
+.wu-main > *{max-width:64ch}
+.wu-main > .wu-fig,.wu-main > .wu-ba,.wu-main > .figs{max-width:none}
+
+.wu-facts{margin:0}
+.wu-facts > div{border-top:1px solid var(--rule);padding:10px 0 12px}
+.wu-facts > div:first-child{border-top:0;padding-top:0}
+.wu-facts dt{font-size:var(--fs-s);color:var(--ink-3)}
+.wu-facts dd{margin:2px 0 0;font-size:var(--fs-s);line-height:1.45}
+.wu-nums{list-style:none;margin:4px 0 0;padding:0}
+.wu-nums li{margin:0 0 8px;color:var(--ink-2);line-height:1.3}
+.wu-nums b{display:block;font-size:var(--fs-l);line-height:1.1;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+
+.wu-main p,.wu-main li{line-height:1.6}
+.wu-main p{margin:0 0 16px}
+.wu-main ul:not([class]),.wu-main ol:not([class]){margin:0 0 16px;padding-left:1.25em}
+.wu-main ul:not([class]) li,.wu-main ol:not([class]) li{margin:0 0 6px}
+.wu-main code{font-family:var(--mono);font-size:.84em;background:var(--paper-2);padding:1px 5px}
+.wu-main strong{font-weight:650}
+.wu-sec{margin:0 0 8px}
+.wu-sec + .wu-sec,.wu-main > * + .wu-sec{margin-top:52px}
+.wu-sec h2,.wu-main > h2{margin:0 0 14px;font-size:var(--fs-l);line-height:1.2;font-weight:650;letter-spacing:-.01em}
+.wu-sec:first-child h2{margin-top:0}
+.wu-note{font-family:var(--mono);font-size:var(--fs-xs);color:var(--ink-3);line-height:1.5}
+
+.wu-fig{margin:36px 0}
+.wu-fig .mat img{width:100%}
+.wu-fig > img{border:1px solid var(--ink);width:100%}
+
+/* Before / After pair */
+.wu-ba{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin:36px 0}
+.wu-ba-col{border-top:1px solid var(--rule);padding-top:12px}
+.wu-ba-col + .wu-ba-col{border-top-color:var(--ink)}
+.wu-ba-k{margin:0 0 10px;font-size:var(--fs-s);font-weight:600;color:var(--ink-3)}
+.wu-ba-col + .wu-ba-col .wu-ba-k{color:var(--ink)}
+.wu-ba-col > p:last-child{margin-bottom:0}
+.wu-ba-col:first-child > p{color:var(--ink-2)}
+.wu-ba-big{display:block;font-size:var(--fs-xl);line-height:1;font-weight:600;letter-spacing:-.02em;margin:0 0 8px}
+
+/* How it works: numbered steps, plain rules between them */
+.wu-steps{list-style:none;margin:20px 0 36px;padding:0;counter-reset:wu}
+.wu-steps > li{counter-increment:wu;display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:8px;border-top:1px solid var(--rule);padding:14px 0 6px}
+.wu-steps > li:last-child{border-bottom:1px solid var(--rule)}
+.wu-steps > li::before{content:counter(wu,decimal-leading-zero);grid-row:1 / span 2;font-family:var(--mono);font-size:var(--fs-xs);color:var(--ink-3);padding-top:4px}
+.wu-steps h3{margin:0 0 4px;font-size:var(--fs-m);line-height:1.3;font-weight:650}
+.wu-steps p{margin:0 0 8px}
+
+/* prev / next */
+.wu-pn{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:var(--gap);border-top:1px solid var(--ink);padding-top:16px}
+.wu-pn a{text-decoration:none;display:block}
+.wu-pn .n{display:block;color:var(--ink-3);margin-bottom:6px}
+.wu-pn-t{display:block;font-size:var(--fs-l);line-height:1.2;font-weight:640;letter-spacing:-.01em}
+.wu-pn a:hover .wu-pn-t{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.wu-next{text-align:right}
+
+/* 404 */
+.lost{padding:56px 0 0}
+.lost h1{grid-column:1 / span 9;margin:0 0 24px;font-size:var(--fs-h1);line-height:1.02;font-weight:560;letter-spacing:-.022em}
+.lost p{grid-column:1 / span 7;margin:0 0 14px;font-size:var(--fs-l);line-height:1.35}
+.lost .n{color:var(--ink-3)}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 1100px){
+  :root{--fs-h1:52px}
+}
+@media (max-width: 980px){
+  .wrap{padding:0 28px}
+  .intro h1{grid-column:1 / -1}
+  .board-wrap{grid-column:1 / -1}
+  .aside{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px;padding-top:20px}
+  .index{margin:0;border-top:0;padding-top:0}
+  .wu-title,.wu-meta{grid-column:1 / -1}
+  .wu-dek{grid-column:1 / span 10}
+  .wu-main{grid-column:1 / -1;grid-row:auto}
+  .wu-side{grid-column:1 / -1;grid-row:auto;order:2;position:static;padding:20px 0 0;margin-top:44px;border-top:1px solid var(--ink)}
+  .wu-main{order:1}
+  .wu-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}
+  .wu-facts > div:nth-child(2){border-top:0;padding-top:0}
+}
+@media (max-width: 760px){
+  :root{--fs-m:17px;--fs-l:20px;--fs-xl:27px;--fs-xxl:32px;--fs-h1:36px;--gap:64px}
+  .wrap{padding:0 20px}
+  .grid > *{grid-column:1 / -1 !important}
+  .top .wrap{flex-direction:column;gap:8px}
+  .mark span{display:block;margin:2px 0 0}
+  .nav{gap:18px;flex-wrap:wrap}
+  .intro{padding:28px 0 24px}
+  .intro h1{line-height:1.06}
+  #board{max-width:420px;margin:4px auto 0}
+  #board .lbl{font-size:16px}
+  .aside{display:block}
+  .readout{min-height:330px}
+  .index{margin-top:8px;border-top:1px solid var(--rule);padding-top:12px}
+  .sec-head{margin-bottom:28px}
+  .mat{padding:12px}
+  #w-01 .txt,#w-02 .txt,#w-03 .shots,#w-04 .txt,#w-05 .side{padding:28px 0 0}
+  #w-02 .side{padding-top:28px}
+  .panel{max-width:280px}
+  #w-03 .under{grid-template-columns:1fr}
+  .work .rules{font-size:30px;margin-bottom:32px}
+  #w-02 .sketch{order:2;margin-top:28px !important}
+  #w-02 .side{order:3}
+  #w-04 .chart{order:2;padding-top:28px}
+  #w-04 .txt{order:1;padding-top:0 !important}
+  .panel div{min-height:48px}
+  .tbl thead{display:none}
+  .tbl tr{display:grid;grid-template-columns:36px 1fr;padding:12px 0;border-bottom:1px solid var(--rule)}
+  .tbl td{border:0;padding:1px 0;width:auto !important;text-align:left !important;background:none !important}
+  .tbl td.n{grid-row:span 4;padding-top:3px}
+  .smalls{columns:1}
+  .about .pic{max-width:180px;margin-bottom:24px}
+  .about .how{margin-top:28px}
+  .arc{grid-template-columns:1fr;border-top:0;border-left:1px solid var(--ink);margin-top:36px;padding-left:18px;gap:14px}
+  .arc li{padding-top:0}
+  .arc li::before{left:-23px;top:3px}
+  .stack{columns:1;margin-top:32px}
+  .links{flex-direction:column;gap:10px}
+  .links a{overflow-wrap:anywhere}
+  footer .wrap{padding-top:40px;flex-direction:column;gap:6px}
+
+  .wu-head{padding:20px 0 32px}
+  .wu-back{margin-bottom:24px}
+  .wu-title{line-height:1.06}
+  .wu-dek{margin-top:16px}
+  .wu-facts{grid-template-columns:1fr}
+  .wu-facts > div:nth-child(2){border-top:1px solid var(--rule);padding-top:10px}
+  .wu-ba{grid-template-columns:1fr;gap:20px}
+  .wu-steps > li{grid-template-columns:36px minmax(0,1fr)}
+  .wu-pn{grid-template-columns:1fr;gap:20px}
+  .wu-next{text-align:left}
+  .lost h1,.lost p{grid-column:1 / -1}
+}
+@media (max-width: 380px){
+  .wrap{padding:0 16px}
+  .nav{gap:14px}
+}
+
+/* ==========================================================================
+   Reduced motion
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none !important;animation:none !important;scroll-behavior:auto !important}
+}
+
+/* ==========================================================================
+   Print base. The resume extends this with its own @media print rules.
+   ========================================================================== */
+@media print{
+  @page{margin:14mm 14mm 16mm}
+  :root{--paper:#fff;--paper-2:#fff;--ink-2:#2a2e30;--ink-3:#45494c;--rule:#b9bdb8;--signal:#15181A;--gap:28px}
+  html,body{background:#fff !important;color:#000}
+  body{font-size:10.5pt;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:none;padding:0}
+  .skip,.nav,.no-print,.switch,.board-hint,.wu-back,.wu-pn{display:none !important}
+  .print-only{display:block !important}
+  .top{border-bottom:1px solid #000}
+  .top .wrap{padding:0 0 6px}
+  a{color:inherit;text-decoration:none}
+  .wu-main a[href^="http"]::after,.wu-main a[href^="mailto:"]::after{content:" (" attr(href) ")";font-size:.85em;color:var(--ink-3);overflow-wrap:anywhere}
+  h1,h2,h3,h4{break-after:avoid;page-break-after:avoid}
+  figure,img,.wu-ba,.wu-steps > li,.tbl tr,.fig,.work{break-inside:avoid;page-break-inside:avoid}
+  p,li{orphans:3;widows:3}
+  .mat{padding:0;background:none}
+  .wu-side{position:static}
+  footer .wrap{padding:12px 0 0}
+}
+
+
+/* ==========================================================================
+   Write-ups 01 and 02 (work/escalation-detector.html, work/chrome-side-panel.html)
+   .wu-fig-narrow  caps a tall screenshot so it does not fill the screen
+   .sp-map         HTML diagram of the side panel's parts (inside .mat)
+     .sp-col       one column; .sp-k is its plain label
+     .sp-box       a bordered part; b = name, .n = mono detail
+     .sp-link      connector between columns: .sp-arrow + .n label
+     .sp-arrow     a drawn arrow; add .sp-v for a vertical one
+   .sp-ruler       width cap for the release ruler (#ruler) in the prose
+   ========================================================================== */
+.wu-fig-narrow .mat img{max-width:480px;margin:0 auto}
+
+.sp-map{display:grid;grid-template-columns:minmax(0,1fr) 72px minmax(0,1.1fr) 72px minmax(0,1fr);align-items:center}
+.sp-col{display:flex;flex-direction:column;min-width:0}
+.sp-k{margin:0 0 8px;font-size:var(--fs-s);font-weight:600}
+.sp-box{border:1px solid var(--ink);background:var(--paper);padding:10px 12px;font-size:var(--fs-s);line-height:1.35}
+.sp-box b{display:block;font-weight:650}
+.sp-box .n{display:block;color:var(--ink-2);margin-top:4px;overflow-wrap:anywhere}
+.sp-map .panel{max-width:none}
+.sp-map .panel div{min-height:0;padding:10px 12px}
+.sp-map .panel .timer{top:8px;right:8px}
+.sp-link{display:flex;flex-direction:column;align-items:stretch;padding:24px 6px 0;text-align:center}
+.sp-link .n{display:block;color:var(--ink-2);margin-top:8px;line-height:1.25}
+.sp-arrow{position:relative;display:block;height:1px;background:var(--ink)}
+.sp-arrow::after{content:"";position:absolute;right:-1px;top:-4px;border-style:solid;border-width:4.5px 0 4.5px 7px;border-color:transparent transparent transparent var(--ink)}
+.sp-arrow.sp-v{width:1px;height:26px;margin:2px auto}
+.sp-arrow.sp-v::after{right:auto;top:auto;left:-4px;bottom:-1px;border-width:7px 4.5px 0 4.5px;border-color:var(--ink) transparent transparent transparent}
+
+.sp-ruler{max-width:300px;margin:24px 0 20px}
+
+@media (max-width: 760px){
+  .wu-fig-narrow .mat img{max-width:100%}
+  .sp-map{grid-template-columns:minmax(0,1fr)}
+  .sp-link{flex-direction:row;align-items:center;justify-content:center;gap:10px;padding:6px 0}
+  .sp-link .sp-arrow{width:1px;height:26px;margin:0}
+  .sp-link .sp-arrow::after{right:auto;top:auto;left:-4px;bottom:-1px;border-width:7px 4.5px 0 4.5px;border-color:var(--ink) transparent transparent transparent}
+  .sp-link .n{margin:0}
+}
+@media print{
+  .sp-map .panel .timer rect[fill="#087A50"]{fill:#15181A;stroke:#15181A}
+}
+/* end write-ups 01 and 02 */
+
+/* ==========================================================================
+   Write-ups 03, 04 and 05
+   .er-one     single 591/634 bar under the problem text (email-routing)
+   .er-k       plain label above the before/after bars
+   .er-chart   the before/after figure
+   .er-tbl     "where each number comes from" table
+   .ix-crop    wrapper for the sidebar screenshot (intercom-integrations)
+   .ix-panel   the dark Domain panel, kept narrow
+   .ix-after   paragraph straight after a .figs block
+   .wu-main .tbl  the homepage table reused in a write-up; on phones each
+               cell shows its column name from data-k
+   ========================================================================== */
+.er-one{margin:22px 0 6px}
+.er-one .bar{margin-top:14px}
+.er-k{margin:0 0 14px;font-size:var(--fs-s);font-weight:600}
+.er-chart .bars{margin-top:0}
+.er-tbl{width:100%;border-collapse:collapse;margin:28px 0 32px;font-size:var(--fs-s)}
+.er-tbl th,.er-tbl td{text-align:left;vertical-align:baseline;padding:10px 16px 10px 0;border-bottom:1px solid var(--rule)}
+.er-tbl thead th{font-weight:400;color:var(--ink-3);border-bottom-color:var(--ink);padding-top:0}
+.er-tbl tbody th{font-weight:400}
+.er-tbl td.v{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ix-crop{overflow:hidden}
+.ix-panel{overflow:hidden}
+.wu-fig .ix-panel img{width:100%;max-width:400px;margin:0 auto}
+.wu-main .ix-after{margin-top:24px}
+.wu-main .tbl{margin:8px 0 28px}
+
+@media (max-width: 760px){
+  .er-tbl thead{display:none}
+  .er-tbl tr{display:grid;grid-template-columns:1fr;padding:10px 0;border-bottom:1px solid var(--rule)}
+  .er-tbl th,.er-tbl td{border:0;padding:1px 0}
+  .er-tbl td.v{white-space:normal}
+  .wu-main .tbl td[data-k]::before{content:attr(data-k) " · ";color:var(--ink-3);font-size:var(--fs-s)}
+}
+/* end write-ups 03, 04 and 05 */

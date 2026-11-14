@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found · Roland Huang</title>
+<meta name="description" content="This page does not exist. Go back to Roland Huang's homepage.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F1F2EE">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="favicon.svg" type="image/svg+xml" data-rel="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&amp;family=Spline+Sans+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css" data-rel="assets/css/site.css">
+<style>
+  /* Fallback so the page still looks right while the stylesheet path is found. */
+  body{margin:0;background:#F1F2EE;color:#15181A;font-family:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif}
+</style>
+<script>
+  // A host can serve this page at any missing URL, for example /repo/work/old-page.html.
+  // Relative links would then point at the wrong folder, so find the site root and fix them.
+  // On a local server, or when this file sits at the root, nothing changes.
+  (function(){
+    function fix(root){
+      var nodes = document.querySelectorAll("[data-rel]");
+      for (var i = 0; i < nodes.length; i++){
+        var n = nodes[i], attr = n.tagName === "A" ? "href" : (n.hasAttribute("src") ? "src" : "href");
+        n.setAttribute(attr, root + n.getAttribute("data-rel"));
+      }
+    }
+    var parts = location.pathname.split("/").filter(Boolean);
+    if (location.protocol === "file:" || parts.length < 2) return;
+    var candidates = ["/" + parts[0] + "/", "/"];
+    function probe(i){
+      if (i >= candidates.length || !window.fetch) return;
+      fetch(candidates[i] + "favicon.svg", {method:"HEAD"}).then(function(r){
+        var type = r.headers.get("content-type") || "";
+        if (r.ok && type.indexOf("svg") !== -1) fix(candidates[i]); else probe(i + 1);
+      }).catch(function(){ probe(i + 1); });
+    }
+    function start(){ probe(0); }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+  })();
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="index.html" data-rel="index.html">Roland Huang<span>Automation &amp; Workflow Engineer</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#work" data-rel="index.html#work">Work</a>
+      <a href="index.html#about" data-rel="index.html#about">About</a>
+      <a href="index.html#contact" data-rel="index.html#contact">Contact</a>
+      <a href="resume.html" data-rel="resume.html">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <section class="lost grid">
+      <p class="n" style="grid-column:1 / -1;margin:0 0 18px">404</p>
+      <h1>This cord is not plugged in.</h1>
+      <p>The page you asked for is not here. It may have moved, or the link has a typo.</p>
+      <p><a href="index.html" data-rel="index.html">Go to the homepage</a> or <a href="index.html#work" data-rel="index.html#work">see the work</a>.</p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Roland Huang, 2026</span>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email routing cleanup · Roland Huang</title>
+<meta name="description" content="Automated alerts were landing on people. I tested routing rules against real traffic first, rejected one that would have spam-tagged 51 real emails, and shipped narrow ones.">
+<meta name="author" content="Roland Huang">
+<meta name="theme-color" content="#F1F2EE">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Email routing cleanup · Roland Huang">
+<meta property="og:description" content="Automated alerts were landing on people. Rules tested against real traffic first, then shipped narrow.">
+<meta property="og:site_name" content="Roland Huang">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&amp;family=Spline+Sans+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../index.html">Roland Huang<span>Automation &amp; Workflow Engineer</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <a href="../resume.html">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <header class="wu-head grid">
+      <p class="wu-back"><a href="../index.html#work">All work</a></p>
+      <p class="wu-meta"><span class="n">04</span><span class="wu-label">IT services</span> · Email → Intercom</p>
+      <h1 class="wu-title">Email routing cleanup</h1>
+      <p class="wu-dek">Automated alerts were landing on people, and almost all of them were being cleared by hand.</p>
+    </header>
+
+    <div class="wu-body grid">
+      <aside class="wu-side" aria-label="Project facts">
+        <dl class="wu-facts">
+          <div><dt>Stack</dt><dd>Intercom workflows and API, Python analysis scripts, Claude Code scheduled tasks</dd></div>
+          <div><dt>Role</dt><dd>I did the analysis, designed the rules and set up the check after go-live.</dd></div>
+          <div><dt>Status</dt><dd>Live since November 2026</dd></div>
+          <div><dt>Numbers</dt><dd>
+            <ul class="wu-nums">
+              <li><b>591 of 634</b> alerts had been cleared by hand</li>
+              <li><b>99 → 37</b> emails reaching people, same sample</li>
+              <li><b>51</b> real emails saved from a bad rule</li>
+              <li><b>14/14</b> alerts routed right after go-live</li>
+            </ul>
+          </dd></div>
+        </dl>
+      </aside>
+
+      <div class="wu-main">
+        <section class="wu-sec">
+          <h2>The problem</h2>
+          <p>The support inbox in Intercom took in email from everywhere. Some of it came from customers. A lot of it came from machines: script alerts, security alerts, backup reports and marketing.</p>
+          <p>The automated mail landed on the help desk, the same as a customer email. Someone had to open it, see it was an alert, and clear it. Then do it again for the next one.</p>
+          <p>Alerts from our Apps Script automations were the clearest case. Since 17 September, 634 of them had reached people. 591 had been marked as spam by hand.</p>
+          <div class="er-one" role="img" aria-label="591 of 634 Apps Script alerts were cleared by hand">
+            <p class="ratio" aria-hidden="true"><b>591 / 634</b><span>Apps Script alerts cleared by hand</span></p>
+            <div class="bar" aria-hidden="true"><i style="width:93.2%"></i></div>
+          </div>
+          <p class="wu-note">The whole bar is 634 alerts. The dark part is the 591 cleared by hand.</p>
+          <p>These alerts were not junk. They just went to the wrong people. Script alerts belonged with engineering. Security and backup alerts belonged with the service desk.</p>
+        </section>
+
+        <section class="wu-sec">
+          <h2>What I built</h2>
+          <p>I shipped a few narrow rules instead of one big one, and tested each on real traffic before it touched a live email.</p>
+          <ul>
+            <li><strong>A simulation first.</strong> I pulled a 4-day sample of real inbound email and wrote Python scripts that run a routing rule over it. That shows what each rule would catch before it goes live.</li>
+            <li><strong>One rule rejected.</strong> The obvious fix was a blanket rule: anything from a no-reply address goes to spam. The simulation showed it would have spam-tagged 51 real emails. I dropped it.</li>
+            <li><strong>Narrow rules shipped.</strong> Exact-sender branches in Intercom workflows. Apps Script alerts go to engineering. Security and backup alerts go to the service desk. Marketing goes to spam.</li>
+            <li><strong>A check that only reads.</strong> An hourly scheduled task looks at where alerts ended up and reports it. It never changes anything.</li>
+          </ul>
+        </section>
+
+        <section class="wu-sec">
+          <h2>How it works</h2>
+          <ol class="wu-steps">
+            <li><h3>Take a real sample</h3><p>I pulled 4 days of real inbound email from Intercom. Real traffic shows the senders you forgot about.</p></li>
+            <li><h3>Simulate each rule</h3><p>A Python script runs a candidate rule over the sample. It counts what would move and lists every email the rule would catch, so I can read them.</p></li>
+            <li><h3>Throw out the risky ones</h3><p>Any rule that catches real emails does not ship. The no-reply rule caught 51, so it went.</p></li>
+            <li><h3>Ship exact senders only</h3><p>The rules that went live match exact senders. A new alert sender is not caught by accident. It stays visible until someone adds it on purpose.</p></li>
+            <li><h3>Watch it after go-live</h3><p>The hourly read-only check confirms each watched alert lands in the right place. After go-live, 14 of 14 did.</p></li>
+          </ol>
+        </section>
+
+        <section class="wu-sec">
+          <h2>What changed</h2>
+          <p>I replayed the same 4-day sample through the new rules. Emails reaching people went from 99 to 37.</p>
+          <figure class="wu-fig er-chart">
+            <div class="bars" role="img" aria-label="Emails reaching people in the same 4-day sample: 99 before, 37 after">
+              <p class="er-k" aria-hidden="true">Emails reaching people, same 4-day sample</p>
+              <div class="bar-row" aria-hidden="true"><span>Before</span><div class="bar"><i style="width:100%"></i></div><span class="v">99</span></div>
+              <div class="bar-row" aria-hidden="true"><span>After</span><div class="bar"><i style="width:37.4%"></i></div><span class="v">37</span></div>
+            </div>
+            <figcaption class="cap">Bar lengths are to scale. Same emails, before and after the new rules.</figcaption>
+          </figure>
+          <table class="er-tbl">
+            <caption class="visually-hidden">The numbers behind this project and where each one comes from</caption>
+            <thead><tr><th scope="col">Number</th><th scope="col">What it counts</th><th scope="col">Where it comes from</th></tr></thead>
+            <tbody>
+              <tr><td class="v">591 of 634</td><th scope="row">Apps Script alerts cleared by hand</th><td>Before the fix, counted from 17 September</td></tr>
+              <tr><td class="v">99 → 37</td><th scope="row">Emails reaching people</th><td>The 4-day sample, before and replayed through the new rules</td></tr>
+              <tr><td class="v">51</td><th scope="row">Real emails the blanket rule would have spam-tagged</th><td>Simulation on the same sample. The rule never shipped.</td></tr>
+              <tr><td class="v">14/14</td><th scope="row">Watched alerts routed to the right place</th><td>The hourly check, after go-live</td></tr>
+            </tbody>
+          </table>
+          <p>Some alerts still reach people. I could have pushed the 37 lower with a wider rule. But a wider rule is how you get the 51. A missed alert costs someone a click. A hidden customer email costs a lot more.</p>
+          <p>The part I would reuse is the order: sample, simulate, read what the rule catches, then ship. It took longer than writing one rule. It also meant I knew what would happen before go-live.</p>
+        </section>
+      </div>
+    </div>
+
+    <nav class="wu-pn" aria-label="More projects">
+      <a class="wu-prev" href="intercom-integrations.html"><span class="n">Previous · 03</span><span class="wu-pn-t">Intercom integration suite</span></a>
+      <a class="wu-next" href="automating-my-job.html"><span class="n">Next · 05</span><span class="wu-pn-t">Automating my own job</span></a>
+    </nav>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Roland Huang, 2026</span>
+    <a class="no-print" href="#main">Back to top</a>
+  </div>
+</footer>
+</body>
+</html>

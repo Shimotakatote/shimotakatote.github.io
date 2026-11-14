@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI escalation detector · Roland Huang</title>
+<meta name="description" content="How I rebuilt a two-Zap escalation detector as a tested Python service on Google Cloud Run, with shadow mode, an eval harness and a prompt playground.">
+<meta name="author" content="Roland Huang">
+<meta name="theme-color" content="#F1F2EE">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI escalation detector · Roland Huang">
+<meta property="og:description" content="It reads every support conversation and flags complaints, cancellations and refunds to Asana and Google Chat.">
+<meta property="og:site_name" content="Roland Huang">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&amp;family=Spline+Sans+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../index.html">Roland Huang<span>Automation &amp; Workflow Engineer</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <a href="../resume.html">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <header class="wu-head grid">
+      <p class="wu-back"><a href="../index.html#work">All work</a></p>
+      <p class="wu-meta"><span class="n">01</span><span class="wu-label">IT services</span> · Intercom → Asana, Google Chat</p>
+      <h1 class="wu-title">AI escalation detector</h1>
+      <p class="wu-dek">It reads every support conversation and flags complaints, cancellations and refunds to Asana and Google Chat.</p>
+    </header>
+
+    <div class="wu-body grid">
+      <aside class="wu-side" aria-label="Project facts">
+        <dl class="wu-facts">
+          <div><dt>Stack</dt><dd>Python, Google Cloud Run, Firestore, Pub/Sub, Vertex AI (Gemini), pytest. Version 1 ran on Zapier.</dd></div>
+          <div><dt>Role</dt><dd>I built version 1. On the rebuild I was the main developer, with about 180 of its 265 commits.</dd></div>
+          <div><dt>Status</dt><dd>Live since 25 Jun 2026</dd></div>
+          <div><dt>Numbers</dt><dd>
+            <ul class="wu-nums">
+              <li><b>988</b> automated tests</li>
+              <li><b>~62</b> AI verdicts a week</li>
+              <li><b>A few dollars</b> a month in model costs</li>
+              <li><b>10/10</b> false positives dropped by prompt v19 in eval</li>
+            </ul>
+          </dd></div>
+        </dl>
+      </aside>
+
+      <div class="wu-main">
+        <section class="wu-sec">
+          <h2>The problem</h2>
+          <p>Someone had to read every support conversation to spot complaints, cancellations, refunds and other urgent issues. Doing that by eye is slow. It is also easy to miss one.</p>
+        </section>
+
+        <section class="wu-sec">
+          <h2>Version 1: two Zaps</h2>
+          <p>I built the first version in Zapier. Each new conversation and each customer reply went to Gemini 2.5 Flash Lite through AI by Zapier. Zapier Storage stopped the same conversation from alerting twice. An escalation created an Asana task and posted a card to Google Chat.</p>
+          <p>The prompt was the hard part. I wrote it as a set of named rules: 16 rules for what is not an escalation (F1 to F16) and 7 for what is (R1 to R7). Every change got a new version number, so I could tell which rule caused which result.</p>
+        </section>
+
+        <figure class="wu-fig wu-fig-narrow">
+          <div class="mat"><img src="../assets/img/escalation-system.png" alt="Version 1 in Zapier: twelve steps that run from a new Intercom conversation through formatting, an AI analysis step, filters and storage lookups, to an Asana task and a webhook call." width="855" height="954" loading="lazy"></div>
+          <figcaption class="cap">Version 1, one of the two Zaps. Twelve steps from a new Intercom conversation to an Asana task and a webhook call.</figcaption>
+        </figure>
+
+        <section class="wu-sec">
+          <h2>What I built</h2>
+          <p>I wanted every prompt change tested against labelled conversations before it shipped. So I wrote a spec in May 2026 and rebuilt the detector as a Python service on Google Cloud Run. It ran in shadow mode first, making verdicts without sending any alerts. It went live on 25 June 2026.</p>
+          <p>Most of the work went into the tools around the classifier, so it could be changed safely:</p>
+          <ul>
+            <li>An offline eval harness with labelled datasets. Every prompt version from v19 on was scored against them.</li>
+            <li>A false-positive backtest that re-runs a new prompt against past false alarms.</li>
+            <li>A 45-conversation replay check before each deploy.</li>
+            <li>A prompt playground behind Identity-Aware Proxy, so a prompt can be tried by hand.</li>
+            <li>A budget alert handler, so the cost cannot creep up unseen.</li>
+          </ul>
+          <p>After go-live I kept adding to it: a race-safe claim so two events never make two tasks, key-account flags, @-mentions for the assignee, a change-of-ownership path, a review tier for borderline cases, and a second check before anything is called a cancellation. It also spots urgent phone calls, alerts a responder and starts a no-reply timer. I benchmarked Gemini 2.5 Flash and Pro against Claude Haiku 4.5 along the way.</p>
+        </section>
+
+        <section class="wu-sec">
+          <h2>How it works</h2>
+          <ol class="wu-steps">
+            <li><h3>Receive</h3><p>Intercom sends a webhook for each new conversation and each customer reply. The service checks the HMAC signature before it does anything else.</p></li>
+            <li><h3>Claim</h3><p>A Firestore record claims the conversation. A retry or a second event cannot create a second task. The record then follows the Asana task through its life.</p></li>
+            <li><h3>Classify</h3><p>Gemini on Vertex AI reads the conversation with the current prompt and returns a verdict. Calls back off and retry when the API is busy.</p></li>
+            <li><h3>Alert</h3><p>An escalation creates an Asana task, mentions the assignee and posts a card to Google Chat. Key accounts are flagged.</p></li>
+            <li><h3>Test the next change</h3><p>A new prompt runs through the eval harness, the backtest and the replay check before it replaces the live one.</p></li>
+          </ol>
+        </section>
+
+        <section class="wu-sec">
+          <h2>What changed</h2>
+          <p>The clearest single result was the step from prompt v18 to v19, measured in eval.</p>
+        </section>
+
+        <div class="wu-ba">
+          <div class="wu-ba-col">
+            <h3 class="wu-ba-k">Before · prompt v18</h3>
+            <b class="wu-ba-big">7/10</b>
+            <p>false positives dropped in eval. 9 of 12 real escalations kept.</p>
+          </div>
+          <div class="wu-ba-col">
+            <h3 class="wu-ba-k">After · prompt v19</h3>
+            <b class="wu-ba-big">10/10</b>
+            <p>false positives dropped in eval. 10 of 12 real escalations kept.</p>
+          </div>
+        </div>
+
+        <section class="wu-sec">
+          <p>The test suite grew from about 200 tests in June and July 2026 to 988. The service handles about 62 AI verdicts a week, and the model calls cost a few dollars a month.</p>
+          <p>The bigger change is how it gets improved. Each prompt is a numbered version with a score, and a new one ships only after it passes the checks.</p>
+          <p class="wu-note">Eval figures come from offline runs on labelled conversations, not from live traffic.</p>
+        </section>
+      </div>
+    </div>
+
+    <nav class="wu-pn" aria-label="More projects">
+      <a class="wu-prev" href="video-downloader.html"><span class="n">Previous · 07</span><span class="wu-pn-t">Video Downloader v2</span></a>
+      <a class="wu-next" href="chrome-side-panel.html"><span class="n">Next · 02</span><span class="wu-pn-t">Staff Chrome side panel</span></a>
+    </nav>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Roland Huang, 2026</span>
+    <a class="no-print" href="#main">Back to top</a>
+  </div>
+</footer>
+</body>
+</html>

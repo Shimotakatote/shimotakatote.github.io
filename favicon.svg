@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <title>Roland Huang</title>
+  <rect width="32" height="32" rx="4" fill="#15181A"/>
+  <path d="M4 9.5h24" stroke="#F1F2EE" stroke-width="1.6"/>
+  <path d="M9 9.5C9 26 23 26 23 9.5" fill="none" stroke="#F1F2EE" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="9" cy="9.5" r="3.6" fill="#15181A" stroke="#F1F2EE" stroke-width="1.6"/>
+  <circle cx="23" cy="9.5" r="3.6" fill="#15181A" stroke="#F1F2EE" stroke-width="1.6"/>
+  <circle cx="9" cy="9.5" r="1.4" fill="#F1F2EE"/>
+  <circle cx="23" cy="9.5" r="1.4" fill="#087A50"/>
+</svg>

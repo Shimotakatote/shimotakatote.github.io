@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>claude-sync · Roland Huang</title>
+<meta name="description" content="claude-sync, a VS Code extension I built. It syncs Claude Code sessions, skills and settings across devices through each user's own Google Drive.">
+<meta name="author" content="Roland Huang">
+<meta name="theme-color" content="#F1F2EE">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="article">
+<meta property="og:title" content="claude-sync · Roland Huang">
+<meta property="og:description" content="A TypeScript VS Code extension that keeps Claude Code the same on every device, using each user's own Google Drive and no servers.">
+<meta property="og:site_name" content="Roland Huang">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&amp;family=Spline+Sans+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../index.html">Roland Huang<span>Automation &amp; Workflow Engineer</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <a href="../resume.html">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <header class="wu-head grid">
+      <p class="wu-back"><a href="../index.html#work">All work</a></p>
+      <p class="wu-meta"><span class="n">06</span><span class="wu-label">Personal</span> · Claude Code → Google Drive</p>
+      <h1 class="wu-title">claude-sync</h1>
+      <p class="wu-dek">A VS Code extension that syncs Claude Code sessions, skills and settings across devices through each user's own Google Drive.</p>
+    </header>
+
+    <div class="wu-body grid">
+      <aside class="wu-side" aria-label="Project facts">
+        <dl class="wu-facts">
+          <div><dt>Stack</dt><dd>TypeScript, VS Code Extension API, Google Drive API and OAuth (googleapis), chokidar, esbuild. Tests in Mocha with @vscode/test-electron.</dd></div>
+          <div><dt>Role</dt><dd>Personal project. I designed and built it.</dd></div>
+          <div><dt>Status</dt><dd>v2.5.4. Built in April 2026.</dd></div>
+          <div><dt>Numbers</dt><dd>
+            <ul class="wu-nums">
+              <li><b>v2.5.4</b> latest version</li>
+              <li><b>47</b> tests</li>
+              <li><b>23</b> commits over 3 days</li>
+              <li><b>12</b> design specs and plans</li>
+              <li><b>~4.7k</b> lines of TypeScript and JavaScript</li>
+            </ul>
+          </dd></div>
+        </dl>
+      </aside>
+
+      <div class="wu-main">
+        <section class="wu-sec">
+          <h2>The problem</h2>
+          <p>Claude Code keeps everything in one folder on your machine, <code>~/.claude</code>. That folder holds your sessions, skills, commands, MCP server setup, hooks and settings. Each computer has its own copy. Move to another machine and none of it comes with you.</p>
+          <p>The first spec was for a team of three sharing one plan. Each of them wanted the same sessions and the same setup on every device they used. Copying the folder by hand does not work for long. It also copies things that should never leave the machine, like credentials.</p>
+        </section>
+
+        <section class="wu-sec">
+          <h2>What I built</h2>
+          <p>claude-sync is a VS Code extension. It watches <code>~/.claude</code> and syncs it through the user's own Google Drive, into the Drive app-data folder. That is a hidden folder only the extension can see, so it does not clutter anyone's Drive. There is also an optional push to a private GitHub repo.</p>
+          <p>It adds a sidebar with two tabs:</p>
+          <ul>
+            <li><strong>Sessions.</strong> Search your sessions, see live titles, continue one, rename it, delete it, or open the raw JSONL.</li>
+            <li><strong>Setup.</strong> Every skill, command, hook and setting, with its sync state next to it.</li>
+          </ul>
+          <p>There is also a Drive file manager. It can delete files in bulk, but only after three confirmations.</p>
+        </section>
+
+        <div class="wu-ba">
+          <div class="wu-ba-col">
+            <h3 class="wu-ba-k">Before</h3>
+            <b class="wu-ba-big">Firestore</b>
+            <p>The first version synced through Firebase Firestore. That meant a database I had to host and pay for, holding everyone's files.</p>
+          </div>
+          <div class="wu-ba-col">
+            <h3 class="wu-ba-k">After</h3>
+            <b class="wu-ba-big">Your own Drive</b>
+            <p>Each user's files go to their own Google Drive. There is no server to run and no hosting bill.</p>
+          </div>
+        </div>
+
+        <section class="wu-sec">
+          <h2>How it works</h2>
+          <ol class="wu-steps">
+            <li><h3>Sign in</h3><p>The user signs in with Google through OAuth. The extension asks for its own app-data folder in that user's Drive.</p></li>
+            <li><h3>Watch</h3><p>chokidar watches <code>~/.claude</code> for new and changed files.</p></li>
+            <li><h3>Filter</h3><p>A hard-coded never-sync list keeps credential files on the machine. Before settings are uploaded, their <code>env</code> blocks are stripped out, because that is where people tend to put keys.</p></li>
+            <li><h3>Upload</h3><p>Changed files go up to the Drive app-data folder.</p></li>
+            <li><h3>Pull on the next device</h3><p>The same user signs in on another machine, and the extension brings their sessions and setup down into that machine's <code>~/.claude</code>.</p></li>
+          </ol>
+        </section>
+
+        <section class="wu-sec">
+          <h2>Safety</h2>
+          <p>The extension writes files into a folder that Claude Code trusts, so I was careful about what it accepts.</p>
+          <ul>
+            <li>Paths coming back from Drive are checked, so a synced file cannot write outside <code>~/.claude</code>.</li>
+            <li>The sidebar is hardened against XSS, since it shows text that comes from session files.</li>
+            <li>Credential files are on a hard-coded never-sync list.</li>
+            <li>Bulk delete in the Drive file manager needs three confirmations.</li>
+          </ul>
+        </section>
+
+        <section class="wu-sec">
+          <h2>What changed</h2>
+          <p>Moving from Firestore to each user's own Drive was the big decision. It removed the hosting cost. It also means nobody's sessions sit in a database that someone else runs.</p>
+          <p>I designed it to scale to 50+ users with no servers. That is a design goal. It has not been run at that size.</p>
+          <p>The work happened in April 2026: 23 commits over 3 days, up to v2.5.4, with 47 tests. I wrote 12 design specs and plans along the way, including the one for the move to Drive.</p>
+          <p class="wu-note">Personal project. Not affiliated with Anthropic.</p>
+        </section>
+      </div>
+    </div>
+
+    <nav class="wu-pn" aria-label="More projects">
+      <a class="wu-prev" href="automating-my-job.html"><span class="n">Previous · 05</span><span class="wu-pn-t">Automating my own job</span></a>
+      <a class="wu-next" href="video-downloader.html"><span class="n">Next · 07</span><span class="wu-pn-t">Video Downloader v2</span></a>
+    </nav>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Roland Huang, 2026</span>
+    <a class="no-print" href="#main">Back to top</a>
+  </div>
+</footer>
+</body>
+</html>

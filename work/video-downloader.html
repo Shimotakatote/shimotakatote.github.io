@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Video Downloader v2 · Roland Huang</title>
+<meta name="description" content="Video Downloader v2, a Chrome extension I built. It saves HLS and DASH streams as real MP4 files, with its own demuxer and muxer.">
+<meta name="author" content="Roland Huang">
+<meta name="theme-color" content="#F1F2EE">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Video Downloader v2 · Roland Huang">
+<meta property="og:description" content="A Manifest V3 Chrome extension that turns HLS and DASH streams into one seekable MP4. About 5.6k lines of JavaScript.">
+<meta property="og:site_name" content="Roland Huang">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&amp;family=Spline+Sans+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../index.html">Roland Huang<span>Automation &amp; Workflow Engineer</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <a href="../resume.html">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <header class="wu-head grid">
+      <p class="wu-back"><a href="../index.html#work">All work</a></p>
+      <p class="wu-meta"><span class="n">07</span><span class="wu-label">Personal</span> · Chrome</p>
+      <h1 class="wu-title">Video Downloader v2</h1>
+      <p class="wu-dek">A Chrome extension that saves HLS and DASH streams as real MP4 files. It has its own demuxer and muxer, so it needs no other software.</p>
+    </header>
+
+    <div class="wu-body grid">
+      <aside class="wu-side" aria-label="Project facts">
+        <dl class="wu-facts">
+          <div><dt>Stack</dt><dd>JavaScript. Chrome Manifest V3: service worker, offscreen document, IndexedDB, declarativeNetRequest. Node test harness and Playwright.</dd></div>
+          <div><dt>Role</dt><dd>Personal project. I designed and built it.</dd></div>
+          <div><dt>Status</dt><dd>v2.0.0. Built on 14 October 2026.</dd></div>
+          <div><dt>Numbers</dt><dd>
+            <ul class="wu-nums">
+              <li><b>~5.6k</b> lines of JavaScript</li>
+              <li><b>1</b> Claude Code session to build it</li>
+              <li><b>4</b> formats: HLS, DASH, MP4, WebM</li>
+            </ul>
+          </dd></div>
+        </dl>
+      </aside>
+
+      <div class="wu-main">
+        <section class="wu-sec">
+          <h2>The problem</h2>
+          <p>Most video on the web is not one file. Sites use HLS or DASH. The page loads a playlist, and the playlist points to hundreds of short segments. Audio and video are often separate.</p>
+          <p>So "save video as" gives you nothing useful. Joining the segments end to end gives you a <code>.ts</code> file, or a pile of fragments that many players cannot seek through. The usual fix is to copy the playlist URL into ffmpeg or yt-dlp on the command line. That works, but it is a lot to ask of someone who just wants the file.</p>
+        </section>
+
+        <section class="wu-sec">
+          <h2>What I built</h2>
+          <p>A Manifest V3 Chrome extension. It spots HLS, DASH, MP4 and WebM media on the page and lists them in its popup. Pick one and it downloads the parts and rebuilds them into a single MP4 that plays and seeks in any normal player.</p>
+          <p>It also:</p>
+          <ul>
+            <li>records live streams;</li>
+            <li>can pause, resume and retry a download without starting over;</li>
+            <li>copies a ready-made ffmpeg or yt-dlp command, for people who prefer the command line.</li>
+          </ul>
+        </section>
+
+        <section class="wu-sec">
+          <h2>What it will not do</h2>
+          <p>It detects DRM-protected streams and will not download them. It also refuses to run on major streaming sites. Both are on purpose. It is meant for streams you have the right to save.</p>
+        </section>
+
+        <div class="wu-ba">
+          <div class="wu-ba-col">
+            <h3 class="wu-ba-k">Before</h3>
+            <b class="wu-ba-big">Playlist + segments</b>
+            <p>A manifest and a pile of short pieces, with audio and video often apart.</p>
+          </div>
+          <div class="wu-ba-col">
+            <h3 class="wu-ba-k">After</h3>
+            <b class="wu-ba-big">1 MP4</b>
+            <p>One file that plays and seeks, built inside the browser.</p>
+          </div>
+        </div>
+
+        <section class="wu-sec">
+          <h2>How it works</h2>
+          <ol class="wu-steps">
+            <li><h3>Detect</h3><p>The extension spots the playlists and media files a page loads, and works out which format each one is.</p></li>
+            <li><h3>Read the manifest</h3><p>It parses HLS playlists and DASH manifests. That includes DASH segment templates and timelines, multi-period DASH, byte ranges, and HLS discontinuities, where the stream changes partway through.</p></li>
+            <li><h3>Fetch</h3><p>The downloading runs in an offscreen document, not the service worker. Chrome stops an idle MV3 service worker, which would kill a long download. Progress is saved in IndexedDB, so a download can pause, resume or retry.</p></li>
+            <li><h3>Demux</h3><p>My own demuxer reads MPEG-TS and fragmented MP4 segments and pulls out the raw audio and video samples, with their timing.</p></li>
+            <li><h3>Mux</h3><p>My own MP4 muxer writes those samples into one file with a proper index, so players can jump to any point.</p></li>
+          </ol>
+        </section>
+
+        <section class="wu-sec">
+          <h2>What changed</h2>
+          <p>The result is a real, seekable MP4 from a stream, with no ffmpeg install and no command line. The demuxer and muxer are my own JavaScript.</p>
+          <p>I built it in one Claude Code session on 14 October 2026. The extension comes to about 5.6k lines of JavaScript. I tested it with a Node test harness and with Playwright driving a real browser.</p>
+          <p>The container code is the core of it. MPEG-TS and MP4 store the same audio and video in very different ways. Getting timestamps to line up across segments, discontinuities and separate audio is what makes the file seek properly.</p>
+        </section>
+      </div>
+    </div>
+
+    <nav class="wu-pn" aria-label="More projects">
+      <a class="wu-prev" href="claude-sync.html"><span class="n">Previous · 06</span><span class="wu-pn-t">claude-sync</span></a>
+      <a class="wu-next" href="escalation-detector.html"><span class="n">Next · 01</span><span class="wu-pn-t">AI escalation detector</span></a>
+    </nav>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Roland Huang, 2026</span>
+    <a class="no-print" href="#main">Back to top</a>
+  </div>
+</footer>
+</body>
+</html>
