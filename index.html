@@ -60,14 +60,15 @@
         </div>
         <ol class="index" id="index" aria-label="Projects">
           <li><a href="work/escalation-detector.html"><span class="n">01</span><span>AI escalation detector</span></a></li>
-          <li><a href="work/chrome-side-panel.html"><span class="n">02</span><span>Staff Chrome side panel</span></a></li>
-          <li><a href="work/intercom-integrations.html"><span class="n">03</span><span>Intercom integration suite</span></a></li>
-          <li><a href="work/email-routing.html"><span class="n">04</span><span>Email routing cleanup</span></a></li>
-          <li><a href="work/automating-my-job.html"><span class="n">05</span><span>Automating my own job</span></a></li>
-          <li><a href="work/claude-sync.html"><span class="n">06</span><span>claude-sync</span></a></li>
-          <li><a href="work/video-downloader.html"><span class="n">07</span><span>Video Downloader v2</span></a></li>
-          <li><a href="#p-08"><span class="n">08</span><span>AI document filing pipeline</span></a></li>
-          <li><a href="#p-09"><span class="n">09</span><span>Intercom + Calendly booking app</span></a></li>
+          <li><a href="work/website-migrations.html"><span class="n">02</span><span>Website migrations and builds</span></a></li>
+          <li><a href="work/chrome-side-panel.html"><span class="n">03</span><span>Staff Chrome side panel</span></a></li>
+          <li><a href="work/intercom-integrations.html"><span class="n">04</span><span>Intercom integration suite</span></a></li>
+          <li><a href="work/email-routing.html"><span class="n">05</span><span>Email routing cleanup</span></a></li>
+          <li><a href="work/automating-my-job.html"><span class="n">06</span><span>Automating my own job</span></a></li>
+          <li><a href="work/claude-sync.html"><span class="n">07</span><span>claude-sync</span></a></li>
+          <li><a href="work/video-downloader.html"><span class="n">08</span><span>Video Downloader v2</span></a></li>
+          <li><a href="#p-09"><span class="n">09</span><span>AI document filing pipeline</span></a></li>
+          <li><a href="#p-10"><span class="n">10</span><span>Intercom + Calendly booking app</span></a></li>
         </ol>
       </div>
     </section>
@@ -84,8 +85,8 @@
         <div class="txt">
           <p class="meta"><span class="n">01</span>IT services · Intercom → Asana, Google Chat</p>
           <h3><a href="work/escalation-detector.html">AI escalation detector</a></h3>
-          <p class="dek">It reads every support conversation and flags complaints, cancellations and refunds to Asana and Google Chat.</p>
-          <p>It started as two Zaps. I rebuilt it as a Python service on Google Cloud Run. It ran in shadow mode before it went live, and an eval harness and a prompt playground mean a prompt change gets tested before it ships. Prompt v19 dropped 10 of 10 false positives in eval.</p>
+          <p class="dek">It checks incoming support conversations for escalations, sorts them into six kinds, and flags them to Asana and Google Chat.</p>
+          <p>It started as two Zaps in October 2025. I rebuilt it as a Python service on Google Cloud Run. It ran in shadow mode before it went live, and an eval harness and a prompt playground mean a prompt change gets tested before it ships. Prompt v19 dropped 10 of 10 false positives in eval.</p>
           <div class="figs">
             <div class="fig"><b>25 Jun 2026</b><span>live since</span></div>
             <div class="fig"><b>~62</b><span>AI verdicts a week</span></div>
@@ -97,6 +98,26 @@
       </article>
 
       <article class="work grid" id="w-02">
+        <div class="txt">
+          <p class="meta"><span class="n">02</span>IT services · WordPress → Cloudways, Cloudflare</p>
+          <h3><a href="work/website-migrations.html">Website migrations and builds</a></h3>
+          <p class="dek">I did hands-on WordPress migration and cutover work on the company's Cloudways hosting, and built two new sites where there was nothing to move.</p>
+          <p>Two moves went live, both with colleagues helping. Two clinic sites reached staging, with much of the server work in Codex sessions I directed, then the client withdrew. I wrote down how I do a cutover and turned it into a migration skill for the team. Its PR is still open.</p>
+          <p class="go"><a href="work/website-migrations.html">Read the write-up →</a></p>
+        </div>
+        <div class="side">
+          <div class="ratio"><b>2 / 12</b><span>DNS records changed at one cutover. Mail was left alone.</span></div>
+          <div class="recs" role="img" aria-label="12 DNS records. 2 were changed at the cutover, 10 were left alone.">
+            <i class="ch"></i><i class="ch"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="figs">
+            <div class="fig"><b>48,050</b><span>files, about 3.9 GB, restored by hand</span></div>
+            <div class="fig"><b>156</b><span>tests in a migration skill, PR still open</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="work grid" id="w-03">
         <figure class="sketch">
           <div class="panel" aria-hidden="true">
             <div>Calendar</div>
@@ -107,7 +128,7 @@
           <figcaption class="cap">The four parts of the panel, sketched.</figcaption>
         </figure>
         <div class="txt">
-          <p class="meta"><span class="n">02</span>IT services · Chrome → Intercom, Asana, Claude Code</p>
+          <p class="meta"><span class="n">03</span>IT services · Chrome → Intercom, Asana, Claude Code</p>
           <h3><a href="work/chrome-side-panel.html">Staff Chrome side panel</a></h3>
           <p class="dek">Calendar, customer lookup, an Asana card with a play/stop timer, and Intercom tickets, in one panel.</p>
           <p>Then I added a Claude Code auto-timer. Hooks track which Asana task you are on and drive the real Asana timer.</p>
@@ -115,7 +136,7 @@
           <p class="go"><a href="work/chrome-side-panel.html">Read the write-up →</a></p>
         </div>
         <div class="side">
-          <div class="ruler" role="img" aria-label="Releases from v0.3.1 to v0.3.56 in one month">
+          <div class="ruler" role="img" aria-label="Releases from v0.3.1 to v0.3.56 while I owned it">
             <svg viewBox="0 0 300 70" id="ruler" aria-hidden="true"></svg>
           </div>
           <div class="big">218/218</div>
@@ -123,15 +144,15 @@
         </div>
       </article>
 
-      <article class="work grid" id="w-03">
+      <article class="work grid" id="w-04">
         <div class="txt">
-          <p class="meta"><span class="n">03</span>IT services · Intercom → WHMCS, Asana</p>
+          <p class="meta"><span class="n">04</span>IT services · Intercom → WHMCS, Asana</p>
           <h3><a href="work/intercom-integrations.html">Intercom integration suite</a></h3>
           <p class="dek">A billing sidebar (WHMCS) and an Asana sidebar inside Intercom, plus a service that adds each contact's email domain.</p>
           <p>The support team used to switch tabs to check billing or find the right task. With the sidebars, it sits next to the conversation.</p>
           <div class="figs">
             <div class="fig"><b>10</b><span>people on the support team, no tab-switching</span></div>
-            <div class="fig"><b>~$0</b><span>a month on Cloud Run</span></div>
+            <div class="fig"><b>Near zero</b><span>running cost on Cloud Run, which scales to zero</span></div>
           </div>
           <p class="go"><a href="work/intercom-integrations.html">Read the write-up →</a></p>
         </div>
@@ -147,7 +168,7 @@
         </div>
       </article>
 
-      <article class="work grid" id="w-04">
+      <article class="work grid" id="w-05">
         <div class="chart">
           <div class="ratio"><b>591 / 634</b><span>alerts had been cleared by hand</span></div>
           <div class="bars" role="img" aria-label="Emails reaching people in the same sample: 99 before, 37 after">
@@ -157,7 +178,7 @@
           </div>
         </div>
         <div class="txt">
-          <p class="meta"><span class="n">04</span>IT services · Email → Intercom</p>
+          <p class="meta"><span class="n">05</span>IT services · Email → Intercom</p>
           <h3><a href="work/email-routing.html">Email routing cleanup</a></h3>
           <p class="dek">Automated alerts were landing on people, and almost all of them were being cleared by hand.</p>
           <p>I simulated the rules against real traffic first. One rule would have spam-tagged 51 real emails, so I rejected it and shipped narrow ones instead.</p>
@@ -166,9 +187,9 @@
         </div>
       </article>
 
-      <article class="work grid" id="w-05">
+      <article class="work grid" id="w-06">
         <div class="txt">
-          <p class="meta"><span class="n">05</span>IT services · Claude Code → Asana</p>
+          <p class="meta"><span class="n">06</span>IT services · Claude Code → Asana</p>
           <h3><a href="work/automating-my-job.html">Automating my own job</a></h3>
           <p class="dek">Claude Code skills that did the routine parts of my week.</p>
           <ol class="steps">
@@ -190,10 +211,15 @@
       <table class="tbl">
         <thead><tr><th scope="col">No.</th><th scope="col">Project</th><th scope="col">For</th><th scope="col">What it does</th><th scope="col" style="text-align:right">Figure</th></tr></thead>
         <tbody>
-          <tr id="p-06"><td class="n">06</td><td class="name"><a href="work/claude-sync.html">claude-sync</a></td><td class="kind">Personal</td><td>VS Code extension. Syncs Claude Code sessions, skills and settings across devices through each user's own Google Drive. TypeScript.</td><td class="f">v2.5.4 · 47 tests</td></tr>
-          <tr id="p-07"><td class="n">07</td><td class="name"><a href="work/video-downloader.html">Video Downloader v2</a></td><td class="kind">Personal</td><td>Chrome extension. Saves HLS/DASH streams as real MP4s with its own demuxer and muxer.</td><td class="f">~5.6k lines of JS</td></tr>
-          <tr id="p-08"><td class="n">08</td><td class="name">AI document filing pipeline</td><td class="kind">Client</td><td>Gemini reads invoices and bank statements, picks the folder, renames and logs.</td><td class="f">20–30 docs a week</td></tr>
-          <tr id="p-09"><td class="n">09</td><td class="name">Intercom + Calendly booking app</td><td class="kind">IT services</td><td>Booking that connects Intercom and Calendly.</td><td class="f">Live Jul 2026</td></tr>
+          <tr id="p-07"><td class="n">07</td><td class="name"><a href="work/claude-sync.html">claude-sync</a></td><td class="kind">Personal</td><td>VS Code extension. Syncs Claude Code sessions, skills and settings across devices through each user's own Google Drive. TypeScript.</td><td class="f">v2.5.4 · 47 tests</td></tr>
+          <tr id="p-08"><td class="n">08</td><td class="name"><a href="work/video-downloader.html">Video Downloader v2</a></td><td class="kind">Personal</td><td>Chrome extension. Saves HLS/DASH streams as real MP4s with its own demuxer and muxer.</td><td class="f">~5.6k lines of JS</td></tr>
+          <tr id="p-09"><td class="n">09</td><td class="name">AI document filing pipeline</td><td class="kind">Client</td><td>Took over an existing document-AI project for a client and rebuilt it: batch processing for long PDFs, an Apps Script web app and Gemini extraction that names and files each document.</td><td class="f">2025 to 2026</td></tr>
+          <tr id="p-10"><td class="n">10</td><td class="name">Intercom + Calendly booking app</td><td class="kind">IT services</td><td>Booking that connects Intercom and Calendly.</td><td class="f">Live Jul 2026</td></tr>
+          <tr id="p-11"><td class="n">11</td><td class="name">Billing platform upkeep</td><td class="kind">IT services</td><td>Two billing-platform upgrades, with staging and backups. Moved the customer billing portal to a new domain and updated about 10 email templates. 2024 to 2026.</td><td class="f">2 upgrades</td></tr>
+          <tr id="p-12"><td class="n">12</td><td class="name">Phone system move</td><td class="kind">IT services</td><td>Took over mid-project, moving support phone numbers to Intercom and Twilio. 8 numbers are on an approved regulatory bundle, and more ports are in progress. 2026.</td><td class="f">4 numbers ported</td></tr>
+          <tr id="p-13"><td class="n">13</td><td class="name">Stripe invoice lookup</td><td class="kind">IT services</td><td>An invoice lookup in Stripe for the support AI agent.</td><td class="f">Live Nov 2026</td></tr>
+          <tr id="p-14"><td class="n">14</td><td class="name">Client automation suite</td><td class="kind">Client</td><td>For a manufacturing client: a weekly meeting notes workflow (v1 to v3, with a user manual), plus stock-level, risk, licence and date alerts. The risk alert flow has 22 steps and 5 branches.</td><td class="f">From Aug 2024</td></tr>
+          <tr id="p-15"><td class="n">15</td><td class="name">Crew tracker system</td><td class="kind">Client</td><td>Apps Script system for an aviation client. A master tracker syncs out to individual trackers, with a development tracker and a dashboard.</td><td class="f">2025 to 2026</td></tr>
         </tbody>
       </table>
 
@@ -201,12 +227,9 @@
         <h3 class="more-head">Smaller projects</h3>
         <ul class="smalls">
           <li>Team active-time report from Intercom events<span class="n">82/82 tests</span></li>
-          <li>Fin AI training sync<span class="n">515 articles</span></li>
+          <li>Fin AI training sync<span class="n">500+ articles, synced weekly</span></li>
           <li>Google Workspace audit report generator</li>
           <li>Loom archive<span class="n">166 videos, 8.49 hours</span></li>
-          <li>AI meeting notes pipeline</li>
-          <li>Risk alert system<span class="n">22 steps, 5 branches</span></li>
-          <li>Asset expiry reminders</li>
         </ul>
       </div>
     </section>
@@ -235,6 +258,7 @@
           <li><span class="n">2023</span>freeCodeCamp Responsive Web Design certificate</li>
           <li><span class="n">2024</span>BSc Computer Science, Notre Dame University. First React apps.</li>
           <li><span class="n">2024</span>Joined an IT services company. Zapier and Apps Script automations.</li>
+          <li><span class="n">2025</span>First WordPress hosting migration, billing-platform upgrades, helpdesk move to Intercom.</li>
           <li><span class="n">2025</span>Freelance, Oct to Dec: automations for a Hawaii wellness startup.</li>
           <li><span class="n">2026</span>Cloud Run services, AI classifiers with evals, extensions, agent tooling.</li>
         </ol>
@@ -243,6 +267,7 @@
           <p><b>Google Cloud.</b> Cloud Run, Firestore, Vertex AI, Pub/Sub.</p>
           <p><b>Automation.</b> Zapier, Make, n8n.</p>
           <p><b>Systems.</b> Intercom, Asana, WHMCS, Stripe, Google Workspace.</p>
+          <p><b>Web hosting.</b> WordPress, PHP, WP-CLI, Cloudways, Cloudflare (DNS, Access, Pages).</p>
           <p><b>Extensions.</b> Chrome MV3 and VS Code.</p>
           <p><b>AI.</b> LLM evals and prompt design. Claude Code skills, hooks, MCP.</p>
           <p><b>Testing.</b> Playwright, pytest, Jest.</p>

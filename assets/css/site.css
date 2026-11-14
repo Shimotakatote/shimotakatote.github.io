@@ -44,6 +44,8 @@
          .n             "Previous" / "Next" + number
          .wu-pn-t       project title
        Use <span class="wu-pn-empty"></span> in place of a missing side.
+       The ring wraps: 01's previous is the last write-up, and the last
+       write-up's next is 01.
 
    Example:
      <main id="main"><div class="wrap">
@@ -51,7 +53,7 @@
          <p class="wu-back"><a href="../index.html#work">All work</a></p>
          <p class="wu-meta"><span class="n">01</span><span class="wu-label">IT services</span> · Intercom → Asana, Google Chat</p>
          <h1 class="wu-title">AI escalation detector</h1>
-         <p class="wu-dek">It reads every support conversation and flags ...</p>
+         <p class="wu-dek">It checks incoming support conversations for escalations ...</p>
        </header>
        <div class="wu-body grid">
          <aside class="wu-side" aria-label="Project facts">
@@ -74,8 +76,8 @@
          </div>
        </div>
        <nav class="wu-pn" aria-label="More projects">
-         <span class="wu-pn-empty"></span>
-         <a class="wu-next" href="chrome-side-panel.html"><span class="n">Next · 02</span><span class="wu-pn-t">Staff Chrome side panel</span></a>
+         <a class="wu-prev" href="video-downloader.html"><span class="n">Previous · 08</span><span class="wu-pn-t">Video Downloader v2</span></a>
+         <a class="wu-next" href="website-migrations.html"><span class="n">Next · 02</span><span class="wu-pn-t">Website migrations and builds</span></a>
        </nav>
      </div></main>
 
@@ -227,9 +229,14 @@ section.block{padding-top:var(--gap)}
 .crop img{position:absolute;max-width:none;width:213.75%;left:-57.5%;top:-30.4%}
 
 /* 02 */
-#w-02 .sketch{grid-column:1 / span 3;margin:0}
-#w-02 .txt{grid-column:4 / span 5;padding-left:12px}
-#w-02 .side{grid-column:10 / span 3;padding-top:6px}
+#w-02 .txt{grid-column:1 / span 5}
+#w-02 .side{grid-column:7 / span 6;padding-top:4px}
+#w-02 .recs{margin-top:18px}
+
+/* 03 */
+#w-03 .sketch{grid-column:1 / span 3;margin:0}
+#w-03 .txt{grid-column:4 / span 5;padding-left:12px}
+#w-03 .side{grid-column:10 / span 3;padding-top:6px}
 .panel{border:1px solid var(--ink);background:var(--paper);font-size:var(--fs-s);max-width:250px}
 .panel div{padding:12px 14px;border-top:1px solid var(--rule);min-height:64px;position:relative}
 .panel div:first-child{border-top:0}
@@ -240,16 +247,16 @@ section.block{padding-top:var(--gap)}
 .big{font-size:var(--fs-xxl);line-height:1;font-weight:600;letter-spacing:-.025em;margin:40px 0 6px}
 .big + span{display:block;font-size:var(--fs-s);color:var(--ink-2)}
 
-/* 03 */
-#w-03 .txt{grid-column:1 / span 4}
-#w-03 .shots{grid-column:6 / span 7}
-#w-03 .under{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;margin-top:18px;align-items:start}
+/* 04 */
+#w-04 .txt{grid-column:1 / span 4}
+#w-04 .shots{grid-column:6 / span 7}
+#w-04 .under{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;margin-top:18px;align-items:start}
 .dark-crop{position:relative;overflow:hidden;aspect-ratio:660 / 190;border:1px solid var(--ink);background:#1e2026}
 .dark-crop img{position:absolute;max-width:none;width:132.9%;left:-2.85%;top:-368.4%}
 
-/* 04 */
-#w-04 .chart{grid-column:1 / span 4;padding-top:4px}
-#w-04 .txt{grid-column:6 / span 6}
+/* 05 */
+#w-05 .chart{grid-column:1 / span 4;padding-top:4px}
+#w-05 .txt{grid-column:6 / span 6}
 .ratio b{display:block;font-size:var(--fs-xxl);line-height:1;font-weight:600;letter-spacing:-.025em}
 .ratio span{display:block;font-size:var(--fs-s);color:var(--ink-2);margin-top:6px}
 .bars{margin-top:44px}
@@ -261,9 +268,9 @@ section.block{padding-top:var(--gap)}
 .figline{font-size:var(--fs-l);margin:20px 0 0 !important}
 .figline b{font-weight:650}
 
-/* 05 */
-#w-05 .txt{grid-column:1 / span 5}
-#w-05 .side{grid-column:7 / span 6;padding-top:4px}
+/* 06 */
+#w-06 .txt{grid-column:1 / span 5}
+#w-06 .side{grid-column:7 / span 6;padding-top:4px}
 .steps{margin:6px 0 0;padding:0;list-style:none;counter-reset:s}
 .steps li{counter-increment:s;padding:3px 0;display:grid;grid-template-columns:28px 1fr}
 .steps li::before{content:counter(s);font-family:var(--mono);font-size:var(--fs-xs);color:var(--ink-3);padding-top:3px}
@@ -298,7 +305,7 @@ section.block{padding-top:var(--gap)}
 .how li{counter-increment:h;font-size:var(--fs-l);line-height:1.2;font-weight:560;letter-spacing:-.01em;margin:0 0 18px;display:grid;grid-template-columns:26px 1fr}
 .how li::before{content:counter(h);font-family:var(--mono);font-size:var(--fs-xs);font-weight:400;color:var(--ink-3);padding-top:6px}
 
-.arc{grid-column:4 / span 9;list-style:none;margin:56px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0 20px;border-top:1px solid var(--ink)}
+.arc{grid-column:4 / span 9;list-style:none;margin:56px 0 0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0 20px;border-top:1px solid var(--ink)}
 .arc li{position:relative;padding-top:16px;font-size:var(--fs-s);line-height:1.4}
 .arc li::before{content:"";position:absolute;left:0;top:-5px;width:9px;height:9px;border-radius:50%;background:var(--paper);border:1px solid var(--ink)}
 .arc li .n{display:block;color:var(--ink);margin-bottom:4px}
@@ -433,15 +440,15 @@ footer a{color:var(--ink-3)}
   .index{margin-top:8px;border-top:1px solid var(--rule);padding-top:12px}
   .sec-head{margin-bottom:28px}
   .mat{padding:12px}
-  #w-01 .txt,#w-02 .txt,#w-03 .shots,#w-04 .txt,#w-05 .side{padding:28px 0 0}
-  #w-02 .side{padding-top:28px}
+  #w-01 .txt,#w-02 .side,#w-03 .txt,#w-04 .shots,#w-05 .txt,#w-06 .side{padding:28px 0 0}
+  #w-03 .side{padding-top:28px}
   .panel{max-width:280px}
-  #w-03 .under{grid-template-columns:1fr}
+  #w-04 .under{grid-template-columns:1fr}
   .work .rules{font-size:30px;margin-bottom:32px}
-  #w-02 .sketch{order:2;margin-top:28px !important}
-  #w-02 .side{order:3}
-  #w-04 .chart{order:2;padding-top:28px}
-  #w-04 .txt{order:1;padding-top:0 !important}
+  #w-03 .sketch{order:2;margin-top:28px !important}
+  #w-03 .side{order:3}
+  #w-05 .chart{order:2;padding-top:28px}
+  #w-05 .txt{order:1;padding-top:0 !important}
   .panel div{min-height:48px}
   .tbl thead{display:none}
   .tbl tr{display:grid;grid-template-columns:36px 1fr;padding:12px 0;border-bottom:1px solid var(--rule)}
@@ -507,7 +514,7 @@ footer a{color:var(--ink-3)}
 
 
 /* ==========================================================================
-   Write-ups 01 and 02 (work/escalation-detector.html, work/chrome-side-panel.html)
+   Write-ups 01 and 03 (work/escalation-detector.html, work/chrome-side-panel.html)
    .wu-fig-narrow  caps a tall screenshot so it does not fill the screen
    .sp-map         HTML diagram of the side panel's parts (inside .mat)
      .sp-col       one column; .sp-k is its plain label
@@ -547,10 +554,10 @@ footer a{color:var(--ink-3)}
 @media print{
   .sp-map .panel .timer rect[fill="#087A50"]{fill:#15181A;stroke:#15181A}
 }
-/* end write-ups 01 and 02 */
+/* end write-ups 01 and 03 */
 
 /* ==========================================================================
-   Write-ups 03, 04 and 05
+   Write-ups 04, 05 and 06
    .er-one     single 591/634 bar under the problem text (email-routing)
    .er-k       plain label above the before/after bars
    .er-chart   the before/after figure
@@ -583,4 +590,14 @@ footer a{color:var(--ink-3)}
   .er-tbl td.v{white-space:normal}
   .wu-main .tbl td[data-k]::before{content:attr(data-k) " · ";color:var(--ink-3);font-size:var(--fs-s)}
 }
-/* end write-ups 03, 04 and 05 */
+/* end write-ups 04, 05 and 06 */
+
+/* ==========================================================================
+   Write-up 02 (work/website-migrations.html), also used on the homepage
+   .recs       a row of 12 boxes, one per DNS record; .ch marks a changed
+               record (ink fill). Give it role="img" and an aria-label.
+   ========================================================================== */
+.recs{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;max-width:420px}
+.recs i{display:block;height:28px;border:1px solid var(--ink-3)}
+.recs i.ch{background:var(--ink);border-color:var(--ink)}
+/* end write-up 02 */

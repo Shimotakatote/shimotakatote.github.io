@@ -78,7 +78,7 @@
   @media print{
     @page{size:auto;margin:10mm 12mm}
     .top,footer,.cv-tools{display:none !important}
-    body{font-size:9.6pt;line-height:1.33}
+    body{font-size:9.6pt;line-height:1.3}
     .cv{padding:0}
     .grid{column-gap:12px}
     .cv-head{padding-bottom:8pt}
@@ -89,7 +89,7 @@
     .cv-role span{font-size:9pt;margin-top:1pt}
     .cv .cv-links{grid-column:8 / span 5 !important;grid-row:1 / span 2;align-self:end;font-size:8.6pt}
     .cv-links li{grid-template-columns:48pt minmax(0,1fr);padding:0}
-    .cv-sec{border-top:.75pt solid #000;padding:4pt 0 5pt;break-inside:avoid}
+    .cv-sec{border-top:.75pt solid #000;padding:3pt 0 4pt;break-inside:avoid}
     .cv .cv-sec > h2{grid-column:1 / span 2 !important;font-size:9.6pt}
     .cv .cv-body{grid-column:3 / span 10 !important}
     .cv-body > p,.cv-intro,.cv-list,.cv-proj{max-width:none}
@@ -99,7 +99,7 @@
     .cv-when{font-size:8.2pt}
     .cv-intro{margin:1pt 0 3pt}
     .cv-list{margin-top:2pt}
-    .cv-list li{padding-left:12pt;margin:0 0 2pt}
+    .cv-list li{padding-left:12pt;margin:0 0 1pt}
     .cv-list li::before{left:1.5pt;top:.5em;width:3.6pt;height:3.6pt;border:.75pt solid #000}
     .cv-proj{margin:0 0 3pt}
     .cv-skills{column-gap:18pt}
@@ -156,12 +156,13 @@
             <h3>Automation &amp; Workflow Engineer <span>· IT services company (remote)</span></h3>
             <p class="cv-when">Jul 2024 to Nov 2026 · 2 yrs 4 mos</p>
           </div>
-          <p class="cv-intro">I started with Zapier and Apps Script automations for the company and its clients, such as an AI document filing pipeline that handles 20 to 30 documents a week. By the end I was building production cloud services.</p>
+          <p class="cv-intro">I started with Zapier and Apps Script automations for the company and its clients, like an AI document filing pipeline I took over and rebuilt. By the end I was building production cloud services.</p>
           <ul class="cv-list">
-            <li>Rebuilt an AI escalation detector from two Zaps into a Python service on Google Cloud Run. It reads every support conversation and flags complaints, cancellations and refunds to Asana and Google Chat. Live since Jun 2026, with <b>988</b> automated tests, with model costs of a few dollars a month.</li>
-            <li>Ran the detector in shadow mode before go-live and tested every prompt change with an eval harness. Prompt v19 dropped <b>10 of 10</b> false positives in eval. It makes about <b>62</b> AI verdicts a week.</li>
-            <li>Took over the staff Chrome side panel: calendar, customer lookup, an Asana timer and Intercom tickets. Shipped v0.3.1 to v0.3.56 in one month with <b>218/218</b> end-to-end tests, and added a Claude Code auto-timer that drives the real Asana timer. Rolled out to all staff.</li>
-            <li>Built Intercom sidebars for WHMCS billing and Asana, plus a service that adds each contact's email domain. Removed tab-switching for a <b>10-person</b> support team, at about <b>$0</b> a month on Cloud Run.</li>
+            <li>Rebuilt an AI escalation detector from two Zaps (Oct 2025) into a Python service on Google Cloud Run. It checks incoming support conversations, sorts escalations into six kinds and flags them to Asana and Google Chat. Live since Jun 2026, with <b>988</b> tests and model costs of a few dollars a month.</li>
+            <li>Ran the detector in shadow mode before go-live and tested each prompt change from v19 on with an eval harness. Prompt v19 dropped <b>10 of 10</b> false positives in eval. It makes about <b>62</b> AI verdicts a week.</li>
+            <li>Did hands-on WordPress migration and cutover work on the company's Cloudways hosting. One migration and one production cutover went live, both with colleagues. Two clinic migrations reached staging before the client withdrew. Built two new WordPress sites, one with a custom PHP theme. At one cutover I changed only <b>2 of 12</b> DNS records. Wrote a migration skill for the team with <b>156</b> tests. Its PR is still open.</li>
+            <li>Took over the staff Chrome side panel: calendar, customer lookup, an Asana timer and Intercom tickets. Releases went from v0.3.1 to v0.3.56 while I owned it, with <b>218/218</b> end-to-end tests. Added a Claude Code auto-timer that drives the real Asana timer. Rolled out to all staff.</li>
+            <li>Built Intercom sidebars for WHMCS billing and Asana, plus a service that adds each contact's email domain. Removed tab-switching for a <b>10-person</b> support team, at close to no cost on Cloud Run.</li>
             <li>Cleaned up email routing by testing rules against real traffic first, and rejected one that would have spam-tagged <b>51</b> real emails. Emails reaching people fell from <b>99 to 37</b> in the sample. <b>14/14</b> alerts routed right after go-live.</li>
             <li>Automated my own admin with Claude Code skills: morning sprint check, session wrap-up, daily time log and Friday status post. They logged <b>6,133</b> minutes to Asana in <b>77</b> entries (Oct to Nov 2026). Read-only by default, drafts only.</li>
           </ul>
@@ -193,8 +194,9 @@
         <p><b>Languages.</b> Python, JavaScript/Node, TypeScript, PHP, Apps Script.</p>
         <p><b>Google Cloud.</b> Cloud Run, Firestore, Vertex AI, Pub/Sub, Docker.</p>
         <p><b>Automation.</b> Zapier, Make, n8n, REST APIs and webhooks.</p>
-        <p><b>Systems.</b> Intercom, Asana, WHMCS, Stripe, Google Workspace.</p>
         <p><b>Extensions.</b> Chrome MV3 and VS Code.</p>
+        <p><b>Systems.</b> Intercom, Asana, WHMCS, Stripe, Google Workspace.</p>
+        <p><b>Web hosting.</b> WordPress, PHP, WP-CLI, Cloudways, Cloudflare (DNS, Access, Pages).</p>
         <p><b>AI.</b> LLM evals and prompt design. Claude Code skills, hooks, MCP.</p>
         <p><b>Testing.</b> Playwright, pytest, Jest.</p>
       </div>

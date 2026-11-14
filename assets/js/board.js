@@ -1,4 +1,4 @@
-/* Patch-bay board for the homepage, plus the release ruler in write-up 02.
+/* Patch-bay board for the homepage, plus the release ruler in write-up 03.
    No dependencies. Safe to load on pages without the board. */
 (function(){
   "use strict";
@@ -14,14 +14,16 @@
   // Tools. u = position along the rail (desktop px). Row A is the top rail on desktop, the left rail on phones.
   // slots = jack order along the rail; null leaves a jack empty so loops have room.
   var NODES = {
-    calendly:{label:"Calendly",     row:"A", u:80,  slots:["09"]},
-    whmcs:   {label:"WHMCS",        row:"A", u:245, slots:["03w"]},
-    intercom:{label:"Intercom",     row:"A", u:440, slots:["03w","09","01","03a","04a",null,null,null,"04b","02i"]},
-    chrome:  {label:"Chrome",       row:"A", u:670, slots:["02i","02a","02c",null,"07a",null,null,null,"07b"]},
-    gchat:   {label:"Google Chat",  row:"B", u:120, slots:["01g"]},
-    asana:   {label:"Asana",        row:"B", u:330, slots:["01a","03a","02a","05"]},
-    claude:  {label:"Claude Code",  row:"B", u:545, slots:["05",null,"02c","06"]},
-    gdrive:  {label:"Google Drive", row:"B", u:735, slots:["06",null,"08a",null,null,null,"08b"]}
+    wordpress:{label:"WordPress",   row:"A", u:64,  slots:["02"]},
+    calendly:{label:"Calendly",     row:"A", u:194, slots:["10"]},
+    whmcs:   {label:"WHMCS",        row:"A", u:310, slots:["04w"]},
+    intercom:{label:"Intercom",     row:"A", u:440, slots:["04w","10","01","04a","05a",null,null,null,"05b","03i"]},
+    chrome:  {label:"Chrome",       row:"A", u:670, slots:["03i","03a","03c",null,"08a",null,null,null,"08b"]},
+    cloudways:{label:"Cloudways",   row:"B", u:74,  slots:["02"]},
+    gchat:   {label:"Google Chat",  row:"B", u:222, slots:["01g"]},
+    asana:   {label:"Asana",        row:"B", u:366, slots:["01a","04a","03a","06"]},
+    claude:  {label:"Claude Code",  row:"B", u:550, slots:["06",null,"03c","07"]},
+    gdrive:  {label:"Google Drive", row:"B", u:740, slots:["07",null,"09a",null,null,null,"09b"]}
   };
 
   // Each wire is one project. Depths are fractions of the gap between the rails.
@@ -29,43 +31,47 @@
   var WIRES = [
     {id:"01", title:"AI escalation detector", route:"Intercom → Asana, Google Chat", kind:"IT services",
      segs:[{t:"split", from:["intercom","01"], to:[["gchat","01g"],["asana","01a"]], at:[282,.56], h:.3, k:.22}],
-     text:"Reads every support conversation and flags complaints, cancellations and refunds. It started as two Zaps and is now a Python service on Cloud Run, with shadow mode and an eval harness.",
+     text:"Checks incoming support conversations for escalations and sorts them into six kinds, from cancellations and refunds to legal threats. It started as two Zaps in Oct 2025 and is now a Python service on Cloud Run, with shadow mode and an eval harness.",
      facts:[["~62","AI verdicts a week"],["988","automated tests"],["25 Jun 2026","live since"]], href:"work/escalation-detector.html"},
-    {id:"02", title:"Staff Chrome side panel", route:"Chrome → Intercom, Asana, Claude Code", kind:"IT services",
-     segs:[{t:"row", a:["intercom","02i"], b:["chrome","02i"], s:.16},
-           {t:"cross", a:["chrome","02a"], b:["asana","02a"], h1:.5, h2:.42},
-           {t:"cross", a:["chrome","02c"], b:["claude","02c"], h1:.4, h2:.4}],
+    {id:"02", title:"Website migrations and builds", route:"WordPress → Cloudways, Cloudflare", kind:"IT services",
+     segs:[{t:"cross", a:["wordpress","02"], b:["cloudways","02"], h1:.45, h2:.45}],
+     text:"Did WordPress migrations and a cutover on Cloudways, with colleagues, and built two new sites where there was nothing to move. Two moves went live. Two clinic sites stopped at staging when the client withdrew.",
+     facts:[["2 of 12","DNS records changed at one cutover"],["48,050","files restored by hand"],["156","tests in a migration skill, PR still open"]], href:"work/website-migrations.html"},
+    {id:"03", title:"Staff Chrome side panel", route:"Chrome → Intercom, Asana, Claude Code", kind:"IT services",
+     segs:[{t:"row", a:["intercom","03i"], b:["chrome","03i"], s:.16},
+           {t:"cross", a:["chrome","03a"], b:["asana","03a"], h1:.5, h2:.42},
+           {t:"cross", a:["chrome","03c"], b:["claude","03c"], h1:.4, h2:.4}],
      text:"Calendar, customer lookup, an Asana card with a timer, and Intercom tickets in one panel. A Claude Code auto-timer drives the real Asana timer from hooks.",
-     facts:[["v0.3.1 → v0.3.56","in one month"],["218/218","end-to-end tests"]], href:"work/chrome-side-panel.html"},
-    {id:"03", title:"Intercom integration suite", route:"Intercom → WHMCS, Asana", kind:"IT services",
-     segs:[{t:"row", a:["whmcs","03w"], b:["intercom","03w"], s:.2},
-           {t:"cross", a:["intercom","03a"], b:["asana","03a"], h1:.55, h2:.35}],
+     facts:[["v0.3.1 → v0.3.56","while I owned it"],["218/218","end-to-end tests"]], href:"work/chrome-side-panel.html"},
+    {id:"04", title:"Intercom integration suite", route:"Intercom → WHMCS, Asana", kind:"IT services",
+     segs:[{t:"row", a:["whmcs","04w"], b:["intercom","04w"], s:.2},
+           {t:"cross", a:["intercom","04a"], b:["asana","04a"], h1:.55, h2:.35}],
      text:"A billing sidebar and an Asana sidebar inside Intercom, plus a service that adds each contact's email domain.",
-     facts:[["10","people on the support team"],["~$0","a month on Cloud Run"]], href:"work/intercom-integrations.html"},
-    {id:"04", title:"Email routing cleanup", route:"Email → Intercom", kind:"IT services",
-     segs:[{t:"loop", node:"intercom", a:"04a", b:"04b", s:.15}],
+     facts:[["10","people on the support team"],["Near zero","running cost on Cloud Run"]], href:"work/intercom-integrations.html"},
+    {id:"05", title:"Email routing cleanup", route:"Email → Intercom", kind:"IT services",
+     segs:[{t:"loop", node:"intercom", a:"05a", b:"05b", s:.15}],
      text:"Alerts were landing on people. I simulated rules against real traffic first and rejected one that would have spam-tagged 51 real emails.",
      facts:[["99 → 37","emails reaching people"],["14/14","alerts routed right after go-live"]], href:"work/email-routing.html"},
-    {id:"05", title:"Automating my own job", route:"Claude Code → Asana", kind:"IT services",
-     segs:[{t:"row", a:["asana","05"], b:["claude","05"], s:.2}],
+    {id:"06", title:"Automating my own job", route:"Claude Code → Asana", kind:"IT services",
+     segs:[{t:"row", a:["asana","06"], b:["claude","06"], s:.2}],
      text:"Skills for my sprint check, session wrap-up, time log, Friday status and quarterly goal update. Read-only by default, drafts only, read back every write.",
      facts:[["6,133","minutes logged in 77 entries"]], href:"work/automating-my-job.html"},
-    {id:"06", title:"claude-sync", route:"Claude Code → Google Drive", kind:"Personal",
-     segs:[{t:"row", a:["claude","06"], b:["gdrive","06"], s:.22}],
+    {id:"07", title:"claude-sync", route:"Claude Code → Google Drive", kind:"Personal",
+     segs:[{t:"row", a:["claude","07"], b:["gdrive","07"], s:.22}],
      text:"A VS Code extension that syncs Claude Code sessions, skills and settings across devices through each user's own Google Drive.",
      facts:[["v2.5.4",""],["47","tests"]], href:"work/claude-sync.html"},
-    {id:"07", title:"Video Downloader v2", route:"Chrome", kind:"Personal",
-     segs:[{t:"loop", node:"chrome", a:"07a", b:"07b", s:.15}],
+    {id:"08", title:"Video Downloader v2", route:"Chrome", kind:"Personal",
+     segs:[{t:"loop", node:"chrome", a:"08a", b:"08b", s:.15}],
      text:"A Chrome extension that saves HLS/DASH streams as real MP4s, with its own demuxer and muxer.",
      facts:[["~5.6k","lines of JS"]], href:"work/video-downloader.html"},
-    {id:"08", title:"AI document filing pipeline", route:"Google Drive", kind:"Client",
-     segs:[{t:"loop", node:"gdrive", a:"08a", b:"08b", s:.15}],
-     text:"Gemini reads invoices and bank statements, picks the folder, renames the file and logs it.",
-     facts:[["20–30","documents a week"]], href:"#p-08"},
-    {id:"09", title:"Intercom + Calendly booking app", route:"Intercom → Calendly", kind:"IT services",
-     segs:[{t:"row", a:["calendly","09"], b:["intercom","09"], s:.44}],
+    {id:"09", title:"AI document filing pipeline", route:"Google Drive", kind:"Client",
+     segs:[{t:"loop", node:"gdrive", a:"09a", b:"09b", s:.15}],
+     text:"I took over an existing document-AI project for a client and rebuilt it: batch processing for long PDFs, an Apps Script web app and Gemini extraction that names and files each document.",
+     facts:[["2025 to 2026",""]], href:"#p-09"},
+    {id:"10", title:"Intercom + Calendly booking app", route:"Intercom → Calendly", kind:"IT services",
+     segs:[{t:"row", a:["calendly","10"], b:["intercom","10"], s:.38}],
      text:"A booking app that connects Intercom and Calendly.",
-     facts:[["Jul 2026","went live"]], href:"#p-09"}
+     facts:[["Jul 2026","went live"]], href:"#p-10"}
   ];
 
   // Two drawings of the same board. Desktop: rails run across. Phone: rails run down, cords cross sideways.
@@ -270,6 +276,16 @@
       R.more.setAttribute("href", w.href);
     }
 
+    // size the readout to its tallest project, so the index list below it never moves on hover
+    // (the CSS min-height stays as the no-JS fallback)
+    function fitReadout(){
+      var ro = document.getElementById("readout"), keep = selected, max = 0;
+      ro.style.minHeight = "";
+      order.forEach(function(id){ select(id); max = Math.max(max, ro.offsetHeight); });
+      select(keep);
+      ro.style.minHeight = max + "px";
+    }
+
     var index = document.getElementById("index");
     while (index.firstChild) index.removeChild(index.firstChild);
     WIRES.forEach(function(w){
@@ -292,11 +308,15 @@
 
     draw();
     select(selected);
-    var redraw = function(){ draw(); };
+    fitReadout();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitReadout);
+    var redraw = function(){ draw(); fitReadout(); };
     if (mq.addEventListener) mq.addEventListener("change", redraw); else if (mq.addListener) mq.addListener(redraw);
+    var resizeTimer = null;
+    window.addEventListener("resize", function(){ clearTimeout(resizeTimer); resizeTimer = setTimeout(fitReadout, 150); });
   }
 
-  // release ruler for the side panel write-up (homepage 02, and its write-up page if it reuses #ruler)
+  // release ruler for the side panel write-up (homepage 03, and its write-up page if it reuses #ruler)
   function initRuler(){
     var ruler = document.getElementById("ruler");
     if (!ruler) return;
@@ -308,6 +328,6 @@
     }
     var a = el("text",{x:x0,y:yb+20},ruler); a.textContent = "v0.3.1";
     var b = el("text",{x:x1,y:yb+20,"text-anchor":"end"},ruler); b.textContent = "v0.3.56";
-    var c = el("text",{x:x0,y:yb+40},ruler); c.textContent = "one month";
+    var c = el("text",{x:x0,y:yb+40},ruler); c.textContent = "while I owned it";
   }
 })();
